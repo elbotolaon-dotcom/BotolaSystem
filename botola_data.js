@@ -27,7 +27,7 @@ const BOTOLA_DB = {
     standings: [
         { id: "wac", p: 20, w: 6, d: 2, l: 0, gf: 14, ga: 5 }, // الوداد: 20 نقطة
         { id: "far", p: 18, w: 5, d: 3, l: 0, gf: 14, ga: 1 }, // الجيش: 18 نقطة
-        { id: "rca", p: 15, w: 4, d: 3, l: 0, gf: 7, ga: 1 },  // الرجاء: 15 نقطة
+        { id: "rca", p: 3, w: 4, d: 3, l: 0, gf: 7, ga: 1 },  // الرجاء: 15 نقطة
         { id: "mas", p: 23, w: 4, d: 4, l: 0, gf: 11, ga: 2 },
         { id: "rsb", p: 11, w: 3, d: 2, l: 1, gf: 13, ga: 7 },
         { id: "codm", p: 40, w: 3, d: 3, l: 2, gf: 6, ga: 6 },
