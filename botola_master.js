@@ -1,5 +1,5 @@
 /* ==========================================================================
-   BOTOLA PRO MASTER V16 (Bulletproof CSS - Fix Huge Logos)
+   BOTOLA PRO MASTER V17 (V16 Structure + V15 Stats & Transfers Features)
    ========================================================================== */
 
 /* 1. قاعدة البيانات (DATABASE) */
@@ -83,10 +83,10 @@ const BOTOLA_DB = {
 };
 
 /* 2. الستايل (STYLES) - مع الحماية الإجبارية (!important) */
-const stylesV16 = `
+const stylesV17 = `
 <style>
     /* =========================================
-       FIXED STYLES FOR BLOGGER V16
+       FIXED STYLES FOR BLOGGER V17
        ========================================= */
     #elbotolaon-widget-container { 
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important; 
@@ -147,14 +147,24 @@ const stylesV16 = `
     
     .current-team-hl { background-color: #fff9db !important; border: 2px solid #d2151e !important; }
 
-    /* MATCHES & SQUAD & TRANSFERS FIXES */
+    /* MATCHES FIXES */
     .match-row { display: flex !important; align-items: center !important; padding: 15px !important; border-bottom: 1px solid #f5f5f5 !important; flex-wrap: wrap !important; }
     .m-team img { width: 28px !important; height: 28px !important; vertical-align: middle !important; display: inline-block !important; }
-    
+
+    /* SQUAD ACCORDION STYLES (RESTORED) */
     .squad-grid { display: grid !important; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)) !important; gap: 15px !important; padding: 20px !important; }
+    .squad-card { border: 1px solid #eee !important; border-radius: 8px !important; background: #fff !important; cursor: pointer !important; overflow: hidden !important; transition: all 0.2s !important; display: block !important; }
     .squad-card img { width: 50px !important; height: 50px !important; border-radius: 50% !important; object-fit: cover !important; }
     
-    .transfers-table td img { width: 25px !important; height: 25px !important; vertical-align: middle !important; display: inline-block !important; }
+    .squad-card.active { border: 1px solid #d2151e !important; background: #fffafa !important; grid-row: span 2 !important; }
+    .card-stats { display: none !important; border-top: 1px solid #eee !important; padding: 15px !important; background: #fff !important; }
+    .squad-card.active .card-stats { display: block !important; }
+    .cs-row { display: flex !important; justify-content: space-around !important; text-align: center !important; }
+    .cs-val { font-weight: bold !important; font-size: 16px !important; color: #d2151e !important; display: block !important; }
+    .cs-lbl { font-size: 12px !important; color: #999 !important; display: block !important; }
+    
+    /* TRANSFERS TABLE FIXES */
+    .transfers-table td img { width: 25px !important; height: 25px !important; vertical-align: middle !important; display: inline-block !important; margin: 0 5px !important; }
 
     /* MOBILE */
     @media (max-width: 480px) {
@@ -177,7 +187,7 @@ document.addEventListener("DOMContentLoaded", function() {
     // A. Sorting
     const sortedStandings = [...BOTOLA_DB.standings].sort((a, b) => (b.pts - a.pts) || ((b.gf - b.ga) - (a.gf - a.ga)));
 
-    let html = stylesV16 + '<div id="elbotolaon-widget-container">';
+    let html = stylesV17 + '<div id="elbotolaon-widget-container">';
 
     // 1. Header
     html += `
@@ -236,30 +246,39 @@ document.addEventListener("DOMContentLoaded", function() {
         <div id="matchesBox"></div>
     </div>`;
 
-    // 4. Squad & Transfers
+    // 4. Squad (With Stats Accordion)
     if(tDetails.squad && tDetails.squad.length > 0) {
         html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">تشكيلة الفريق</h3></div><div class="squad-grid">`;
         tDetails.squad.forEach((p, idx) => {
             html += `
-            <div class="squad-card" id="card-${idx}" onclick="toggleCard(${idx})" style="display:flex !important; align-items:center !important;">
+            <div class="squad-card" id="card-${idx}" onclick="window.toggleCard(${idx})">
                 <div style="padding:10px; display:flex; align-items:center;">
                     <img src="${p.img}" onerror="this.src='https://via.placeholder.com/50'">
                     <div style="margin-right:10px;"><h4>${p.n}</h4><p style="margin:0;color:#888;font-size:12px;">${p.p}</p></div>
+                </div>
+                <div class="card-stats">
+                    <div class="cs-row">
+                        <div><span class="cs-val">${p.m}</span><span class="cs-lbl">مباريات</span></div>
+                        <div><span class="cs-val">${p.g || 0}</span><span class="cs-lbl">أهداف</span></div>
+                        <div><span class="cs-val">${p.y}</span><span class="cs-lbl">إنذارات</span></div>
+                    </div>
                 </div>
             </div>`;
         });
         html += `</div></div>`;
     }
 
+    // 5. Transfers (Full Details)
     if(tDetails.transfers && tDetails.transfers.length > 0) {
         html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">سوق الانتقالات</h3></div><div class="eb-scroll"><table class="ranking-table" style="text-align:right !important;">`;
         tDetails.transfers.forEach(t => {
-            const fLogo = t.from_logo || ""; const tLogo = t.to_logo || "";
+            const fLogo = t.from_logo || ""; 
+            const tLogo = t.to_logo || "";
             html += `<tr>
-                <td style="text-align:right !important;">${t.n}</td>
-                <td style="color:#666"><img src="${fLogo}" style="width:20px!important;height:20px!important;vertical-align:middle!important;"></td>
-                <td style="color:#666"><img src="${tLogo}" style="width:20px!important;height:20px!important;vertical-align:middle!important;"></td>
-                <td style="color:#28a745;font-weight:bold;">${t.type}</td>
+                <td style="text-align:right !important; width:40%;">${t.n}</td>
+                <td style="color:#666; width:20%;">من: <img src="${fLogo}"></td>
+                <td style="color:#666; width:20%;">إلى: <img src="${tLogo}"></td>
+                <td style="color:#28a745;font-weight:bold; width:20%;">${t.type}</td>
             </tr>`;
         });
         html += `</table></div></div>`;
@@ -268,6 +287,7 @@ document.addEventListener("DOMContentLoaded", function() {
     html += `</div>`;
     appContainer.innerHTML = html;
 
+    // --- Helper Functions ---
     window.renderRound = function(roundId) {
         const box = document.getElementById("matchesBox");
         const matches = BOTOLA_DB.rounds[roundId] || [];
@@ -292,5 +312,17 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         }
         box.innerHTML = mHtml;
+    };
+    
+    window.toggleCard = function(idx) {
+        // Toggle current card
+        const current = document.getElementById(`card-${idx}`);
+        if(current) current.classList.toggle('active');
+        
+        // Optional: Close others
+        const all = document.querySelectorAll('.squad-card');
+        all.forEach(c => {
+            if(c.id !== `card-${idx}`) c.classList.remove('active');
+        });
     };
 });
