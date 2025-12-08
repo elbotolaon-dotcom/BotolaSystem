@@ -1,14 +1,15 @@
 /* ==========================================================================
-   BOTOLA PRO ULTIMATE SYSTEM V12.0 (Matches + Transfers + Interactive Squad)
+   BOTOLA PRO MASTER V13.0 (Perfect Matches Schedule + Smart Standings)
    ========================================================================== */
 
 /* 1. قاعدة البيانات (DATABASE) */
 const BOTOLA_DB = {
+    // أ) الفرق (ثابتة)
     teams: {
         "wac": { name: "الوداد الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png", founded: "1937", city: "الدار البيضاء" },
         "rca": { name: "الرجاء الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png", founded: "1949", city: "الدار البيضاء" },
         "far": { name: "الجيش الملكي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6aa3FtbYHbHMZEhj-bAuBYL6fCkhm9U1t8T_L0bXdw8nAyzN4MVvtcSGVbrzB0f-npw___4ghtfUkwj4LDBW5HdRFesvedqj4m-Ged4QKqb2sqk-liO2LQiQ3GBSwmKB0MK2oLjaMc7a4oRpr8-glUuYyCjkv_toLfkS9PxHD45XvWMBonsb6nyKAf_0/s1600/far%20elbotolaon.png", founded: "1958", city: "الرباط" },
-        // ... (يمكنك إضافة باقي الفرق هنا)
+        // ... (أضف باقي الفرق الـ 16 هنا)
         "mas": { name: "المغرب الفاسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-igka8JGdMxooELJ6fdG65ds3byXt37bQtGDJ8QRhXwoYR4ieyN0sh1v_FjPevP17byg9akoq9isvyjwdzGlMRBcREzFxILSb3BIvqnPDi0TcYYS6ChwnkwHLC5uatbAHU4WsxLEPltKZ8Bc87cJvFrDeuQZyB085AZsluC47LZTWNwOMQxPCY3sxVhY/s1600/fes%20elbotolaon.png", founded: "1946", city: "فاس" },
         "rsb": { name: "نهضة بركان", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5JzEJVz_dOr2253YustqAKuvDosJ9JCQQByClQCJKQlgxdYIvZbbfutqFFQljifMX9z4ZgjkeTWEF-PUsPU-PIrQEM8WXEIpqg2Dg26zCtwVmJBOanF4ZoOMJzeBLb_RoLDUv-d3uwz4v2hCSRXZKoTuwMfyS7YCd9F8pWiPhfVoSeqCUbKG5CZG5cE/s1600/barkan%20elbotolaon.png", founded: "1938", city: "بركان" },
         "codm": { name: "النادي المكناسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTxx7NmgVNlZhzkwOoglitHjTOR0F11OuYKLLkXcldpljr8SGL08yDo_ohy5ZfkkGzdpSvDYmiF1pJynETrfUAdsK2xzHZPSuhRUVZH_rMXG-c04U2Lziooy1wWN-3azB0_OAo4YQnTJceeXmHKRswKzgDt6qJOOekYdqqVHSFfWpg4IXB9s2YXvtDIME/s1600/maknas%20elbotolaon.png", founded: "1962", city: "مكناس" },
@@ -24,6 +25,7 @@ const BOTOLA_DB = {
         "usym": { name: "يعقوب المنصور", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png", founded: "1988", city: "الرباط" }
     },
 
+    // ب) جدول الترتيب (الأرقام التي تغيرها أسبوعياً)
     standings: [
         { id: "wac",  p: 8, w: 6, d: 2, l: 0, gf: 14, ga: 5,  pts: 20 },
         { id: "far",  p: 8, w: 5, d: 3, l: 0, gf: 14, ga: 1,  pts: 18 },
@@ -43,100 +45,94 @@ const BOTOLA_DB = {
         { id: "ocs",  p: 8, w: 1, d: 2, l: 5, gf: 6,  ga: 15, pts: 5 }
     ],
 
-    // بيانات مفصلة لكل فريق (لاعبين، مباريات، انتقالات)
+    // ج) بيانات الجولات (المباريات منظمة حسب الجولة)
+    // هذا هو النظام الذي يتيح لك اختيار الجولة (1، 2، 8...)
+    rounds: {
+        "7": [
+            {d:"05/11", t:"16:00", t1:"husa", s:"1-2", t2:"wac", std:"ملعب أدرار"},
+            {d:"05/11", t:"18:00", t1:"rca", s:"2-0", t2:"codm", std:"مركب محمد الخامس"}
+        ],
+        "8": [
+            {d:"09/11", t:"16:00", t1:"ocs", s:"1-2", t2:"wac", std:"ملعب المسيرة"},
+            {d:"09/11", t:"18:00", t1:"far", s:"1-0", t2:"mas", std:"مركب مولاي عبد الله"}
+        ],
+        "9": [
+            {d:"22/11", t:"20:00", t1:"wac", s:"-", t2:"mas", std:"مركب محمد الخامس"}
+        ]
+    },
+
+    // د) تفاصيل كل فريق (اللاعبين + الانتقالات)
     teamDetails: {
         "wac": {
-            // اللاعبين مع إحصائياتهم
             squad: [
-               {n:"يوسف المطيع", p:"حارس مرمى", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUo4dkktTOZdj0bbqu-XI4gdOIkckaLF37Yb6JCLgNcXB2nAfNDJzTZnz0ulQ87JnBLvM5JFO0CQ1rp51MWoAqcGVZalI9yqv_9zNBWpcUJhWlppWWxC2nqCQUE-gxq8-DD9f9C-jnBWdB-Nu4z1JOPjVwgQf8yLsYN8p85zflqRQe7M7mxe0bbPq0lV0/s1600/%D9%8A%D9%88%D8%B3%D9%81%20%D8%A7%D9%84%D9%85%D8%B7%D9%8A%D8%B9.png", m:8, y:0, r:0},
-               {n:"جمال حركاس", p:"دفاع", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqLwK5j1oH-4M5Zq0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o/s1600/%D8%AC%D9%85%D8%A7%D9%84%20%D8%AD%D8%B1%D9%83%D8%A7%D8%B3.png", m:8, y:1, r:0},
-               {n:"مباي نيانغ", p:"هجوم", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtyFGW1x-E7l2vd22J20Qy1V1dsw65PNBv1A9jfrUy53wNe05DOZhwAJbYX5WUiEH_yzc3iPEdKsRK_XY-V7GXzOqOrGX3yek3Rg4PzQw7tsPn4sCft-vVULn15-eQ5yCivDEVNNND_qh-yTaUeBXRQRBK6DFOcSG7NTaNJsjzbHAA8SQDE5_Ix7_ind8/s1600/niang.png", m:5, y:0, r:0}
+               {n:"يوسف المطيع", p:"حارس مرمى", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUo4dkktTOZdj0bbqu-XI4gdOIkckaLF37Yb6JCLgNcXB2nAfNDJzTZnz0ulQ87JnBLvM5JFO0CQ1rp51MWoAqcGVZalI9yqv_9zNBWpcUJhWlppWWxC2nqCQUE-gxq8-DD9f9C-jnBWdB-Nu4z1JOPjVwgQf8yLsYN8p85zflqRQe7M7mxe0bbPq0lV0/s1600/%D9%8A%D9%88%D8%B3%D9%81%20%D8%A7%D9%84%D9%85%D8%B7%D9%8A%D8%B9.png", m:8, y:0},
+               {n:"جمال حركاس", p:"دفاع", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhqLwK5j1oH-4M5Zq0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o0l6jQ5z5o/s1600/%D8%AC%D9%85%D8%A7%D9%84%20%D8%AD%D8%B1%D9%83%D8%A7%D8%B3.png", m:8, y:1}
             ],
-            // جدول المباريات
-            matches: [
-                {r:7, d:"05/11", opp:"husa", s:"1-2", ven:"أكادير (خ)"},
-                {r:8, d:"09/11", opp:"ocs", s:"1-2", ven:"آسفي (خ)"},
-                {r:9, d:"22/11", opp:"mas", s:"-", ven:"الدار البيضاء (د)"}
-            ],
-            // الانتقالات
             transfers: [
-                {n:"زاكارياس غيلان", from:"نهضة الزمامرة", type:"انتقال", date:"23-11"},
-                {n:"حكيم زياش", from:"غلطة سراي", type:"إعارة", date:"01-01"}
+                {n:"زاكارياس غيلان", from:"نهضة الزمامرة", type:"انتقال"},
+                {n:"حكيم زياش", from:"غلطة سراي", type:"إعارة"}
             ]
         },
-        "rca": { squad: [], matches: [], transfers: [] },
-        "far": { squad: [], matches: [], transfers: [] }
+        "rca": { squad: [], transfers: [] },
+        "far": { squad: [], transfers: [] }
     }
 };
 
-/* 2. الستايل (CSS) - التصميم الفخم */
-const ultimateStyles = `
+/* 2. الستايل (مستوحى 100% من الملف 0.txt - الجمال والفخامة) */
+const stylesV13 = `
 <style>
-    /* RESET & FONTS */
-    #elbotolaon-widget-container { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fff; color: #333; direction: rtl; text-align: right; width: 100%; box-sizing: border-box; }
+    #elbotolaon-widget-container { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; color: #333; direction: rtl; text-align: right; box-sizing: border-box; width: 100%; }
     #elbotolaon-widget-container * { box-sizing: border-box; }
 
-    /* SECTIONS */
+    /* General Section Box */
     .eb-section { margin-bottom: 25px; border: 1px solid #eee; border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
     .eb-header { padding: 15px 20px; border-bottom: 2px solid #f5f5f5; display: flex; align-items: center; justify-content: space-between; background: #fafafa; }
     .eb-title { font-size: 18px; font-weight: 700; border-right: 5px solid #d2151e; padding-right: 12px; margin: 0; color: #333; }
 
-    /* HEADER */
+    /* Team Header (Big Logo) */
     .eb-team-header { padding: 25px; display: flex; align-items: center; gap: 20px; background: #fff; flex-wrap: wrap; }
     .eb-team-logo { width: 90px; height: 90px; object-fit: contain; }
 
-    /* STANDINGS TABLE (SMART & BEAUTIFUL) */
+    /* --- TABLE STYLING (THE BEAUTIFUL ONE) --- */
     .eb-scroll { width: 100%; overflow-x: auto; }
     table.ranking-table { width: 100%; border-collapse: collapse; min-width: 600px; }
     table.ranking-table th { background: #f9f9f9; padding: 15px 10px; text-align: center; font-weight: 700; border-bottom: 2px solid #eee; color: #555; }
     table.ranking-table td { padding: 10px; text-align: center; border-bottom: 1px solid #f5f5f5; color: #444; }
     
-    .team-cell { text-align: right !important; display: flex; align-items: center; gap: 10px; font-weight: 600; width: 35%; }
-    .team-mini-logo { width: 25px; height: 25px; }
+    .col-team { text-align: right !important; width: 35%; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .team-mini-logo { width: 25px; height: 25px; object-fit: contain; }
     
-    /* RANK BADGES & COLORS */
+    /* Rank Colors */
     .rank-badge { display: inline-block; width: 26px; height: 26px; line-height: 26px; border-radius: 50%; color: #fff; font-size: 13px; font-weight: bold; background: #ccc; }
-    
-    /* Highlight Classes (Dynamic) */
-    .row-ucl { background-color: #e6ffe6 !important; } /* أخضر للمتصدرين */
-    .row-ucl .rank-badge { background: #28a745; }
-    .row-rel { background-color: #ffe6e6 !important; } /* أحمر للهبوط */
-    .row-rel .rank-badge { background: #dc3545; }
+    .row-ucl { background-color: #f0fff4 !important; } .row-ucl .rank-badge { background: #28a745; }
+    .row-rel { background-color: #fff5f5 !important; } .row-rel .rank-badge { background: #dc3545; }
+    .current-team-hl { background-color: #fff9db !important; border: 2px solid #d2151e; }
 
-    /* Current Team Border Highlight */
-    .current-team-border { border: 2px solid #d2151e !important; background-color: #fff9db !important; }
+    /* --- MATCHES SCHEDULE (DROPDOWN STYLE) --- */
+    .eb-schedule-header { padding: 15px; background: #f8f8f8; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+    .eb-select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 150px; cursor: pointer; }
+    .match-row { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f5f5f5; flex-wrap: wrap; }
+    .m-date { width: 75px; font-size: 13px; color: #555; font-weight:bold; text-align: center; border-left: 1px solid #eee; padding-left: 10px; }
+    .m-info { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; min-width: 200px; }
+    .m-team { width: 35%; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
+    .m-team.away { justify-content: flex-end; flex-direction: row-reverse; } /* عكس اتجاه الفريق الضيف */
+    .m-team img { width: 28px; height: 28px; }
+    .m-res { background: #eee; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 15px; min-width: 50px; text-align: center; }
+    .m-stadium { font-size: 11px; color: #777; background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #eee; white-space: nowrap; margin-top: 5px; }
 
-    /* INTERACTIVE SQUAD (ACCORDION) */
+    /* SQUAD & TRANSFERS */
     .squad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
-    .squad-card { border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: 0.3s; position: relative; overflow: hidden; background: #fff; }
-    .squad-card:hover { border-color: #d2151e; }
-    .card-head { padding: 10px; display: flex; align-items: center; gap: 15px; }
-    .p-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid #eee; }
-    .p-info h4 { margin: 0; font-size: 15px; }
-    .p-info span { font-size: 12px; color: #777; }
-    .card-details { display: none; background: #fdfdfd; padding: 10px; border-top: 1px solid #eee; font-size: 13px; color: #555; }
-    .card-details div { margin-bottom: 5px; }
-    .squad-card.active .card-details { display: block; animation: slideDown 0.3s; }
-    .squad-card.active { border-color: #d2151e; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .squad-card { border: 1px solid #eee; border-radius: 8px; padding: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; background: #fff; }
+    .squad-card:hover { border-color: #d2151e; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+    .p-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
     
-    @keyframes slideDown { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
-
-    /* MATCHES TABLE */
-    .match-row { display: flex; align-items: center; padding: 12px; border-bottom: 1px solid #f0f0f0; }
-    .m-date { width: 60px; font-size: 12px; font-weight: bold; color: #555; text-align: center; border-left: 1px solid #eee; }
-    .m-teams { flex: 1; padding: 0 15px; display: flex; justify-content: space-between; font-weight: 600; }
-    .m-score { background: #eee; padding: 3px 10px; border-radius: 4px; font-size: 14px; }
-    .m-ven { font-size: 11px; color: #999; }
-
-    /* TRANSFERS TABLE */
-    table.transfers-table { width: 100%; font-size: 14px; }
-    table.transfers-table td { padding: 10px; border-bottom: 1px solid #eee; }
-    .t-type { color: #28a745; font-weight: bold; font-size: 12px; }
+    .transfers-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
+    .t-type { color: #28a745; font-weight: bold; }
 
     @media (max-width: 768px) {
         .hide-mobile { display: none !important; }
         .col-team { width: 60%; }
-        .squad-grid { grid-template-columns: 1fr; }
+        .m-stadium { display: none; } /* إخفاء الملعب في الموبايل لتبسيط العرض */
     }
 </style>
 `;
@@ -146,31 +142,31 @@ document.addEventListener("DOMContentLoaded", function() {
     const appContainer = document.getElementById("botola-app") || document.getElementById("team-app");
     if(!appContainer) return;
 
-    const currentTeamId = appContainer.getAttribute("data-team");
-    const tInfo = BOTOLA_DB.teams[currentTeamId];
-    const tDetails = BOTOLA_DB.teamDetails[currentTeamId] || { squad: [], matches: [], transfers: [] };
+    const cTeamId = appContainer.getAttribute("data-team");
+    const tInfo = BOTOLA_DB.teams[cTeamId];
+    const tDetails = BOTOLA_DB.teamDetails[cTeamId] || { squad: [], transfers: [] };
 
-    // 1. ترتيب الجدول
+    // A. Render Header + Standings
     const sortedStandings = [...BOTOLA_DB.standings].sort((a, b) => (b.pts - a.pts) || ((b.gf - b.ga) - (a.gf - a.ga)));
 
-    let html = ultimateStyles + '<div id="elbotolaon-widget-container">';
+    let html = stylesV13 + '<div id="elbotolaon-widget-container">';
 
-    // A. HEADER
+    // 1. Header
     html += `
     <div class="eb-section">
         <div class="eb-team-header">
             <img src="${tInfo.logo}" class="eb-team-logo">
             <div>
                 <h1 style="margin:0; color:#d2151e;">${tInfo.name}</h1>
-                <p style="margin:5px 0; color:#666;">التأسيس: ${tInfo.founded} | المدينة: ${tInfo.city}</p>
+                <p style="margin:5px 0; color:#666;">تأسس: ${tInfo.founded} | المدينة: ${tInfo.city}</p>
             </div>
         </div>
     </div>`;
 
-    // B. STANDINGS (الجدول الملون والمميز)
+    // 2. Standings (Beautiful + Smart)
     html += `
     <div class="eb-section">
-        <div class="eb-header"><h3 class="eb-title">جدول الترتيب</h3></div>
+        <div class="eb-header"><h3 class="eb-title">جدول الترتيب العام</h3></div>
         <div class="eb-scroll">
             <table class="ranking-table">
                 <thead><tr><th>#</th><th>الفريق</th><th>لعب</th><th class="hide-mobile">+/-</th><th>ن</th></tr></thead>
@@ -179,18 +175,14 @@ document.addEventListener("DOMContentLoaded", function() {
         const rank = index + 1;
         const teamData = BOTOLA_DB.teams[row.id];
         let rClass = "";
-        
-        // الألوان (الأخضر للمتصدرين)
         if (rank <= 2) rClass = "row-ucl";
         else if (rank >= 15) rClass = "row-rel";
-
-        // الإطار الأحمر للفريق الحالي
-        if (row.id === currentTeamId) rClass += " current-team-border";
+        if (row.id === cTeamId) rClass += " current-team-hl";
 
         html += `
         <tr class="${rClass}">
             <td><span class="rank-badge">${rank}</span></td>
-            <td class="team-cell"><img src="${teamData.logo}" class="team-mini-logo"> ${teamData.name}</td>
+            <td class="col-team"><img src="${teamData.logo}" class="team-mini-logo"> ${teamData.name}</td>
             <td>${row.p}</td>
             <td class="hide-mobile">${row.gf - row.ga}</td>
             <td style="font-weight:bold;">${row.pts}</td>
@@ -198,55 +190,75 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     html += `</tbody></table></div></div>`;
 
-    // C. MATCHES (جدول المباريات)
-    if(tDetails.matches.length > 0) {
-        html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">المباريات القادمة والسابقة</h3></div><div>`;
-        tDetails.matches.forEach(m => {
-            const oppTeam = BOTOLA_DB.teams[m.opp] ? BOTOLA_DB.teams[m.opp].name : m.opp;
+    // 3. Matches Schedule (DROPDOWN) - هذا ما طلبته في الصورة
+    html += `
+    <div class="eb-section">
+        <div class="eb-schedule-header">
+            <h3 class="eb-title">جدول المباريات</h3>
+            <select id="roundSelect" class="eb-select" onchange="renderRound(this.value)">
+                <option value="7">الجولة 7</option>
+                <option value="8" selected>الجولة 8</option>
+                <option value="9">الجولة 9</option>
+            </select>
+        </div>
+        <div id="matchesBox"></div> <!-- هنا سيتم رسم المباريات -->
+    </div>`;
+
+    // 4. Squad & Transfers
+    if(tDetails.squad.length > 0) {
+        html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">تشكيلة الفريق</h3></div><div class="squad-grid">`;
+        tDetails.squad.forEach(p => {
             html += `
-            <div class="match-row">
-                <div class="m-date">${m.d}<br>الجولة ${m.r}</div>
-                <div class="m-teams">
-                    <span>${tInfo.name}</span>
-                    <span class="m-score">${m.s}</span>
-                    <span>${oppTeam}</span>
-                </div>
-                <div class="m-ven hide-mobile">${m.ven}</div>
+            <div class="squad-card" onclick="alert('إحصائيات: ${p.n}\\nلعب: ${p.m}\\nصفراء: ${p.y}')">
+                <img src="${p.img}" class="p-img" onerror="this.src='https://via.placeholder.com/50'">
+                <div><h4 style="margin:0;">${p.n}</h4><span style="font-size:12px;color:#777;">${p.p}</span></div>
             </div>`;
         });
         html += `</div></div>`;
     }
 
-    // D. TRANSFERS (جدول الانتقالات)
     if(tDetails.transfers.length > 0) {
-        html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">سوق الانتقالات</h3></div>
-        <table class="transfers-table"><tbody>`;
+        html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">سوق الانتقالات</h3></div><table class="transfers-table" style="width:100%">`;
         tDetails.transfers.forEach(t => {
             html += `<tr><td>${t.n}</td><td style="color:#666">من: ${t.from}</td><td class="t-type">${t.type}</td></tr>`;
         });
-        html += `</tbody></table></div>`;
-    }
-
-    // E. INTERACTIVE SQUAD (التشكيلة التفاعلية)
-    if(tDetails.squad.length > 0) {
-        html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">تشكيلة الفريق</h3></div><div class="squad-grid">`;
-        tDetails.squad.forEach((p, idx) => {
-            html += `
-            <div class="squad-card" onclick="this.classList.toggle('active')">
-                <div class="card-head">
-                    <img src="${p.img}" class="p-img" onerror="this.src='https://via.placeholder.com/50'">
-                    <div class="p-info"><h4>${p.n}</h4><span>${p.p}</span></div>
-                </div>
-                <div class="card-details">
-                    <div>مباريات: <strong>${p.m || 0}</strong></div>
-                    <div>بطاقات صفراء: <strong>${p.y || 0}</strong></div>
-                    <div>بطاقات حمراء: <strong>${p.r || 0}</strong></div>
-                </div>
-            </div>`;
-        });
-        html += `</div></div>`;
+        html += `</table></div>`;
     }
 
     html += `</div>`;
     appContainer.innerHTML = html;
+
+    // تشغيل دالة المباريات لأول مرة (للجولة 8 الافتراضية)
+    window.renderRound = function(roundId) { // جعلناها عامة لتعمل مع الـ onchange
+        const box = document.getElementById("matchesBox");
+        const matches = BOTOLA_DB.rounds[roundId] || [];
+        
+        let mHtml = "";
+        if(matches.length === 0) {
+            mHtml = '<div style="padding:20px;text-align:center;color:#999;">لا توجد مباريات لهذه الجولة</div>';
+        } else {
+            matches.forEach(m => {
+                // نجلب شعارات الفرق من الداتا
+                const logo1 = BOTOLA_DB.teams[m.t1] ? BOTOLA_DB.teams[m.t1].logo : "";
+                const name1 = BOTOLA_DB.teams[m.t1] ? BOTOLA_DB.teams[m.t1].name : m.t1;
+                const logo2 = BOTOLA_DB.teams[m.t2] ? BOTOLA_DB.teams[m.t2].logo : "";
+                const name2 = BOTOLA_DB.teams[m.t2] ? BOTOLA_DB.teams[m.t2].name : m.t2;
+
+                mHtml += `
+                <div class="match-row">
+                    <div class="m-date">${m.d}<br>${m.t}</div>
+                    <div class="m-info">
+                        <div class="m-team"><img src="${logo1}"> ${name1}</div>
+                        <div class="m-res">${m.s}</div>
+                        <div class="m-team away"><img src="${logo2}"> ${name2}</div>
+                    </div>
+                    <div class="m-stadium">${m.std}</div>
+                </div>`;
+            });
+        }
+        box.innerHTML = mHtml;
+    };
+    
+    // استدعاء أولي للجولة الافتراضية
+    renderRound("8");
 });
