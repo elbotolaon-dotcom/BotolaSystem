@@ -1,15 +1,14 @@
 /* ==========================================================================
-   BOTOLA PRO MASTER V13.0 (Perfect Matches Schedule + Smart Standings)
+   BOTOLA PRO MASTER V14.0 (Mobile Optimized + Full 16 Teams Structure)
    ========================================================================== */
 
 /* 1. قاعدة البيانات (DATABASE) */
 const BOTOLA_DB = {
-    // أ) الفرق (ثابتة)
+    // أ) الفرق (بيانات ثابتة: الاسم، الشعار، التأسيس، المدينة)
     teams: {
         "wac": { name: "الوداد الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png", founded: "1937", city: "الدار البيضاء" },
         "rca": { name: "الرجاء الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png", founded: "1949", city: "الدار البيضاء" },
         "far": { name: "الجيش الملكي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6aa3FtbYHbHMZEhj-bAuBYL6fCkhm9U1t8T_L0bXdw8nAyzN4MVvtcSGVbrzB0f-npw___4ghtfUkwj4LDBW5HdRFesvedqj4m-Ged4QKqb2sqk-liO2LQiQ3GBSwmKB0MK2oLjaMc7a4oRpr8-glUuYyCjkv_toLfkS9PxHD45XvWMBonsb6nyKAf_0/s1600/far%20elbotolaon.png", founded: "1958", city: "الرباط" },
-        // ... (أضف باقي الفرق الـ 16 هنا)
         "mas": { name: "المغرب الفاسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-igka8JGdMxooELJ6fdG65ds3byXt37bQtGDJ8QRhXwoYR4ieyN0sh1v_FjPevP17byg9akoq9isvyjwdzGlMRBcREzFxILSb3BIvqnPDi0TcYYS6ChwnkwHLC5uatbAHU4WsxLEPltKZ8Bc87cJvFrDeuQZyB085AZsluC47LZTWNwOMQxPCY3sxVhY/s1600/fes%20elbotolaon.png", founded: "1946", city: "فاس" },
         "rsb": { name: "نهضة بركان", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5JzEJVz_dOr2253YustqAKuvDosJ9JCQQByClQCJKQlgxdYIvZbbfutqFFQljifMX9z4ZgjkeTWEF-PUsPU-PIrQEM8WXEIpqg2Dg26zCtwVmJBOanF4ZoOMJzeBLb_RoLDUv-d3uwz4v2hCSRXZKoTuwMfyS7YCd9F8pWiPhfVoSeqCUbKG5CZG5cE/s1600/barkan%20elbotolaon.png", founded: "1938", city: "بركان" },
         "codm": { name: "النادي المكناسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTxx7NmgVNlZhzkwOoglitHjTOR0F11OuYKLLkXcldpljr8SGL08yDo_ohy5ZfkkGzdpSvDYmiF1pJynETrfUAdsK2xzHZPSuhRUVZH_rMXG-c04U2Lziooy1wWN-3azB0_OAo4YQnTJceeXmHKRswKzgDt6qJOOekYdqqVHSFfWpg4IXB9s2YXvtDIME/s1600/maknas%20elbotolaon.png", founded: "1962", city: "مكناس" },
@@ -25,7 +24,7 @@ const BOTOLA_DB = {
         "usym": { name: "يعقوب المنصور", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png", founded: "1988", city: "الرباط" }
     },
 
-    // ب) جدول الترتيب (الأرقام التي تغيرها أسبوعياً)
+    // ب) جدول الترتيب (Standings)
     standings: [
         { id: "wac",  p: 8, w: 6, d: 2, l: 0, gf: 14, ga: 5,  pts: 20 },
         { id: "far",  p: 8, w: 5, d: 3, l: 0, gf: 14, ga: 1,  pts: 18 },
@@ -45,8 +44,7 @@ const BOTOLA_DB = {
         { id: "ocs",  p: 8, w: 1, d: 2, l: 5, gf: 6,  ga: 15, pts: 5 }
     ],
 
-    // ج) بيانات الجولات (المباريات منظمة حسب الجولة)
-    // هذا هو النظام الذي يتيح لك اختيار الجولة (1، 2، 8...)
+    // ج) بيانات الجولات (Rounds)
     rounds: {
         "7": [
             {d:"05/11", t:"16:00", t1:"husa", s:"1-2", t2:"wac", std:"ملعب أدرار"},
@@ -61,7 +59,8 @@ const BOTOLA_DB = {
         ]
     },
 
-    // د) تفاصيل كل فريق (اللاعبين + الانتقالات)
+    // د) تفاصيل الفرق (Squad & Transfers) - تم تجهيز الهيكل للـ 16 فريق
+    // فقط املأ البيانات داخل squad: [ ... ] لكل فريق
     teamDetails: {
         "wac": {
             squad: [
@@ -74,14 +73,27 @@ const BOTOLA_DB = {
             ]
         },
         "rca": { squad: [], transfers: [] },
-        "far": { squad: [], transfers: [] }
+        "far": { squad: [], transfers: [] },
+        "mas": { squad: [], transfers: [] },
+        "rsb": { squad: [], transfers: [] },
+        "codm": { squad: [], transfers: [] },
+        "irt": { squad: [], transfers: [] },
+        "ocs": { squad: [], transfers: [] },
+        "fus": { squad: [], transfers: [] },
+        "uts": { squad: [], transfers: [] },
+        "husa": { squad: [], transfers: [] },
+        "dhj": { squad: [], transfers: [] },
+        "od": { squad: [], transfers: [] },
+        "rcz": { squad: [], transfers: [] },
+        "kacm": { squad: [], transfers: [] },
+        "usym": { squad: [], transfers: [] }
     }
 };
 
-/* 2. الستايل (مستوحى 100% من الملف 0.txt - الجمال والفخامة) */
-const stylesV13 = `
+/* 2. الستايل (Styles) - تحسينات الموبايل V14 */
+const stylesV14 = `
 <style>
-    #elbotolaon-widget-container { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; color: #333; direction: rtl; text-align: right; box-sizing: border-box; width: 100%; }
+    #elbotolaon-widget-container { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #fff; color: #333; direction: rtl; text-align: right; box-sizing: border-box; width: 100%; max-width: 100%; }
     #elbotolaon-widget-container * { box-sizing: border-box; }
 
     /* General Section Box */
@@ -89,17 +101,23 @@ const stylesV13 = `
     .eb-header { padding: 15px 20px; border-bottom: 2px solid #f5f5f5; display: flex; align-items: center; justify-content: space-between; background: #fafafa; }
     .eb-title { font-size: 18px; font-weight: 700; border-right: 5px solid #d2151e; padding-right: 12px; margin: 0; color: #333; }
 
-    /* Team Header (Big Logo) */
+    /* Team Header */
     .eb-team-header { padding: 25px; display: flex; align-items: center; gap: 20px; background: #fff; flex-wrap: wrap; }
     .eb-team-logo { width: 90px; height: 90px; object-fit: contain; }
+    @media (max-width: 480px) {
+        .eb-team-header { padding: 15px; flex-direction: column; text-align: center; }
+        .eb-title { font-size: 16px; }
+    }
 
-    /* --- TABLE STYLING (THE BEAUTIFUL ONE) --- */
-    .eb-scroll { width: 100%; overflow-x: auto; }
-    table.ranking-table { width: 100%; border-collapse: collapse; min-width: 600px; }
-    table.ranking-table th { background: #f9f9f9; padding: 15px 10px; text-align: center; font-weight: 700; border-bottom: 2px solid #eee; color: #555; }
+    /* --- TABLE STYLING --- */
+    .eb-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    /* إزالة العرض الأدنى الكبير ليناسب الموبايل بشكل أفضل */
+    table.ranking-table { width: 100%; border-collapse: collapse; min-width: 100%; }
+    
+    table.ranking-table th { background: #f9f9f9; padding: 15px 10px; text-align: center; font-weight: 700; border-bottom: 2px solid #eee; color: #555; white-space: nowrap; }
     table.ranking-table td { padding: 10px; text-align: center; border-bottom: 1px solid #f5f5f5; color: #444; }
     
-    .col-team { text-align: right !important; width: 35%; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+    .col-team { text-align: right !important; width: 40%; display: flex; align-items: center; gap: 10px; font-weight: 600; }
     .team-mini-logo { width: 25px; height: 25px; object-fit: contain; }
     
     /* Rank Colors */
@@ -108,20 +126,20 @@ const stylesV13 = `
     .row-rel { background-color: #fff5f5 !important; } .row-rel .rank-badge { background: #dc3545; }
     .current-team-hl { background-color: #fff9db !important; border: 2px solid #d2151e; }
 
-    /* --- MATCHES SCHEDULE (DROPDOWN STYLE) --- */
-    .eb-schedule-header { padding: 15px; background: #f8f8f8; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .eb-select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; width: 150px; cursor: pointer; }
+    /* --- MATCHES SCHEDULE --- */
+    .eb-schedule-header { padding: 15px; background: #f8f8f8; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .eb-select { padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; min-width: 120px; cursor: pointer; }
     .match-row { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #f5f5f5; flex-wrap: wrap; }
     .m-date { width: 75px; font-size: 13px; color: #555; font-weight:bold; text-align: center; border-left: 1px solid #eee; padding-left: 10px; }
     .m-info { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; min-width: 200px; }
     .m-team { width: 35%; display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 14px; }
-    .m-team.away { justify-content: flex-end; flex-direction: row-reverse; } /* عكس اتجاه الفريق الضيف */
+    .m-team.away { justify-content: flex-end; flex-direction: row-reverse; }
     .m-team img { width: 28px; height: 28px; }
     .m-res { background: #eee; padding: 5px 12px; border-radius: 6px; font-weight: bold; font-size: 15px; min-width: 50px; text-align: center; }
     .m-stadium { font-size: 11px; color: #777; background: #f9f9f9; padding: 4px 8px; border-radius: 4px; border: 1px solid #eee; white-space: nowrap; margin-top: 5px; }
 
     /* SQUAD & TRANSFERS */
-    .squad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; padding: 20px; }
+    .squad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; padding: 20px; }
     .squad-card { border: 1px solid #eee; border-radius: 8px; padding: 10px; display: flex; align-items: center; gap: 15px; cursor: pointer; transition: 0.2s; background: #fff; }
     .squad-card:hover { border-color: #d2151e; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
     .p-img { width: 50px; height: 50px; border-radius: 50%; object-fit: cover; }
@@ -129,10 +147,17 @@ const stylesV13 = `
     .transfers-table td { padding: 12px; border-bottom: 1px solid #eee; font-size: 14px; }
     .t-type { color: #28a745; font-weight: bold; }
 
-    @media (max-width: 768px) {
+    /* Mobile Tweaks */
+    @media (max-width: 480px) {
         .hide-mobile { display: none !important; }
-        .col-team { width: 60%; }
-        .m-stadium { display: none; } /* إخفاء الملعب في الموبايل لتبسيط العرض */
+        .m-stadium { display: none; }
+        .col-team { width: auto; flex: 1; font-size: 13px; }
+        .rank-badge { width: 22px; height: 22px; line-height: 22px; font-size: 11px; }
+        table.ranking-table th, table.ranking-table td { padding: 10px 4px; font-size: 13px; }
+        .m-team { font-size: 12px; flex-direction: column; gap: 2px; text-align: center; }
+        .m-team.away { flex-direction: column; }
+        .m-info { padding: 0 5px; }
+        .squad-grid { grid-template-columns: 1fr; }
     }
 </style>
 `;
@@ -143,13 +168,14 @@ document.addEventListener("DOMContentLoaded", function() {
     if(!appContainer) return;
 
     const cTeamId = appContainer.getAttribute("data-team");
-    const tInfo = BOTOLA_DB.teams[cTeamId];
+    // حماية: إذا كان الكود غير موجود، نستخدم قيمة افتراضية لتجنب الخطأ
+    const tInfo = BOTOLA_DB.teams[cTeamId] || BOTOLA_DB.teams["wac"];
     const tDetails = BOTOLA_DB.teamDetails[cTeamId] || { squad: [], transfers: [] };
 
     // A. Render Header + Standings
     const sortedStandings = [...BOTOLA_DB.standings].sort((a, b) => (b.pts - a.pts) || ((b.gf - b.ga) - (a.gf - a.ga)));
 
-    let html = stylesV13 + '<div id="elbotolaon-widget-container">';
+    let html = stylesV14 + '<div id="elbotolaon-widget-container">';
 
     // 1. Header
     html += `
@@ -163,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function() {
         </div>
     </div>`;
 
-    // 2. Standings (Beautiful + Smart)
+    // 2. Standings
     html += `
     <div class="eb-section">
         <div class="eb-header"><h3 class="eb-title">جدول الترتيب العام</h3></div>
@@ -190,22 +216,22 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     html += `</tbody></table></div></div>`;
 
-    // 3. Matches Schedule (DROPDOWN) - هذا ما طلبته في الصورة
+    // 3. Matches Schedule
     html += `
     <div class="eb-section">
         <div class="eb-schedule-header">
             <h3 class="eb-title">جدول المباريات</h3>
-            <select id="roundSelect" class="eb-select" onchange="renderRound(this.value)">
+            <select id="roundSelect" class="eb-select" onchange="window.renderRound(this.value)">
                 <option value="7">الجولة 7</option>
                 <option value="8" selected>الجولة 8</option>
                 <option value="9">الجولة 9</option>
             </select>
         </div>
-        <div id="matchesBox"></div> <!-- هنا سيتم رسم المباريات -->
+        <div id="matchesBox"></div>
     </div>`;
 
     // 4. Squad & Transfers
-    if(tDetails.squad.length > 0) {
+    if(tDetails.squad && tDetails.squad.length > 0) {
         html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">تشكيلة الفريق</h3></div><div class="squad-grid">`;
         tDetails.squad.forEach(p => {
             html += `
@@ -217,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function() {
         html += `</div></div>`;
     }
 
-    if(tDetails.transfers.length > 0) {
+    if(tDetails.transfers && tDetails.transfers.length > 0) {
         html += `<div class="eb-section"><div class="eb-header"><h3 class="eb-title">سوق الانتقالات</h3></div><table class="transfers-table" style="width:100%">`;
         tDetails.transfers.forEach(t => {
             html += `<tr><td>${t.n}</td><td style="color:#666">من: ${t.from}</td><td class="t-type">${t.type}</td></tr>`;
@@ -228,8 +254,8 @@ document.addEventListener("DOMContentLoaded", function() {
     html += `</div>`;
     appContainer.innerHTML = html;
 
-    // تشغيل دالة المباريات لأول مرة (للجولة 8 الافتراضية)
-    window.renderRound = function(roundId) { // جعلناها عامة لتعمل مع الـ onchange
+    // Render Function
+    window.renderRound = function(roundId) {
         const box = document.getElementById("matchesBox");
         const matches = BOTOLA_DB.rounds[roundId] || [];
         
@@ -238,7 +264,6 @@ document.addEventListener("DOMContentLoaded", function() {
             mHtml = '<div style="padding:20px;text-align:center;color:#999;">لا توجد مباريات لهذه الجولة</div>';
         } else {
             matches.forEach(m => {
-                // نجلب شعارات الفرق من الداتا
                 const logo1 = BOTOLA_DB.teams[m.t1] ? BOTOLA_DB.teams[m.t1].logo : "";
                 const name1 = BOTOLA_DB.teams[m.t1] ? BOTOLA_DB.teams[m.t1].name : m.t1;
                 const logo2 = BOTOLA_DB.teams[m.t2] ? BOTOLA_DB.teams[m.t2].logo : "";
@@ -259,6 +284,6 @@ document.addEventListener("DOMContentLoaded", function() {
         box.innerHTML = mHtml;
     };
     
-    // استدعاء أولي للجولة الافتراضية
-    renderRound("8");
+    // Initial Call
+    window.renderRound("8");
 });
