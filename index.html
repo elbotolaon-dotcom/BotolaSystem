@@ -1,393 +1,209 @@
-// ==================== نظام البطولة المغربية الكامل ====================
-(function() {
-    'use strict';
-    
-    // ==================== قاعدة البيانات ====================
-    const BOTOLA_DB = {
-        teams: {
-            "wac": { 
-                name: "الوداد الرياضي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png", 
-                founded: "1937", 
-                city: "الدار البيضاء",
-                stadium: "مركب محمد الخامس"
-            },
-            "rca": { 
-                name: "الرجاء الرياضي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png", 
-                founded: "1949", 
-                city: "الدار البيضاء",
-                stadium: "مركب محمد الخامس"
-            },
-            "far": { 
-                name: "الجيش الملكي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6aa3FtbYHbHMZEhj-bAuBYL6fCkhm9U1t8T_L0bXdw8nAyzN4MVvtcSGVbrzB0f-npw___4ghtfUkwj4LDBW5HdRFesvedqj4m-Ged4QKqb2sqk-liO2LQiQ3GBSwmKB0MK2oLjaMc7a4oRpr8-glUuYyCjkv_toLfkS9PxHD45XvWMBonsb6nyKAf_0/s1600/far%20elbotolaon.png", 
-                founded: "1958", 
-                city: "الرباط",
-                stadium: "المجمع الرياضي مولاي عبد الله"
-            },
-            "mas": { 
-                name: "المغرب الفاسي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-igka8JGdMxooELJ6fdG65ds3byXt37bQtGDJ8QRhXwoYR4ieyN0sh1v_FjPevP17byg9akoq9isvyjwdzGlMRBcREzFxILSb3BIvqnPDi0TcYYS6ChwnkwHLC5uatbAHU4WsxLEPltKZ8Bc87cJvFrDeuQZyB085AZsluC47LZTWNwOMQxPCY3sxVhY/s1600/fes%20elbotolaon.png", 
-                founded: "1946", 
-                city: "فاس",
-                stadium: "ملعب فاس الكبير"
-            },
-            "rsb": { 
-                name: "نهضة بركان", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5JzEJVz_dOr2253YustqAKuvDosJ9JCQQByClQCJKQlgxdYIvZbbfutqFFQljifMX9z4ZgjkeTWEF-PUsPU-PIrQEM8WXEIpqg2Dg26zCtwVmJBOanF4ZoOMJzeBLb_RoLDUv-d3uwz4v2hCSRXZKoTuwMfyS7YCd9F8pWiPhfVoSeqCUbKG5CZG5cE/s1600/barkan%20elbotolaon.png", 
-                founded: "1955", 
-                city: "بركان",
-                stadium: "ملعب البشير"
-            },
-            "codm": { 
-                name: "النادي المكناسي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTxx7NmgVNlZhzkwOoglitHjTOR0F11OuYKLLkXcldpljr8SGL08yDo_ohy5ZfkkGzdpSvDYmiF1pJynETrfUAdsK2xzHZPSuhRUVZH_rMXG-c04U2Lziooy1wWN-3azB0_OAo4YQnTJceeXmHKRswKzgDt6qJOOekYdqqVHSFfWpg4IXB9s2YXvtDIME/s1600/maknas%20elbotolaon.png", 
-                founded: "1946", 
-                city: "مكناس",
-                stadium: "الشرق الشرفي"
-            },
-            "irt": { 
-                name: "اتحاد طنجة", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4P_IvUvnWjM46GX9tjM1ar2klX7qaFOa4VN5YvGLhCUWA7NKS5WuGJUJqk9_uqfpL99_mb-0ocxZIdO8kWDjT3hZWTSn_Mmj3JOzE8mqSOdxrLLZW4VEM-L5ymQagqAOnkZxXW_D6OLPmcmpHFwIuph0LZwYCQdTWxAywnIYNM_AhI8fwcldq0I9QVWk/s1600/tanja%20elbotolaon.png", 
-                founded: "1977", 
-                city: "طنجة",
-                stadium: "ملعب ابن بطوطة"
-            },
-            "ocs": { 
-                name: "أولمبيك آسفي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhennOIbFknnlYOmS4wwizF1GIxzDbqFnDXCeEdaGpoKpbzrFfbPExst5Gfd1S2u4hQgaOu_uohsHRYyjBdrnm8PurL_6UlyyM-KbvlKVF2tf_uBAgPnD5dW68wtKunRoLqk8HhO4IPM62oHtonupb2Inp2VsoZK7b1Ecf5MuzgZQMX_CtBx4EEnWjzuH8/s1600/assfi%20elbotolaon.png", 
-                founded: "1921", 
-                city: "آسفي",
-                stadium: "ملعب المسيرة"
-            },
-            "fus": { 
-                name: "الفتح الرياضي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY8Xl-VjUnPns3iQjGGnQxc4wFdtX-iG3iUPNh2KbWXx4gWo4D7Ai30h-xheqe28GmiHtCugMptmzCZJJgbS0R8SMLDRjD7wNXHY2hVgbXPEA2uDk2LTGlrlXaksyK4HdJQI6JXkJRISNL_J_BxJbazT33HJfOzcJuhCRmjY1QeIpLHpdlRxzG6-_Phng/s1600/fath%20raba%20elbotolaon.png", 
-                founded: "1946", 
-                city: "الرباط",
-                stadium: "ملعب مولاي الحسن"
-            },
-            "uts": { 
-                name: "إتحاد تواركة", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhybz1aXcm8HM4tMmsZ2FsE17Mdz-yYEj8ZhpBAf0dxRUrpmcXkuPmVE5NiHFZbOCCzPsbDHvS0Lh169sEUwe2KfgV-njTNqPtzDRmyT7JWYgqef5k6TKzs_8mdd_Hc3ucpb7Lh9KtJBhZ08cP-7TsikV-JI7d8jedtYvuoPeX676STgHE3xzgnagU98P8/s1600/tihad%20twarka%20elbotolaon.png", 
-                founded: "1975", 
-                city: "تواركة",
-                stadium: "ملعب بلدية تواركة"
-            },
-            "husa": { 
-                name: "حسنية أكادير", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioKR1msekF2BXfNIgI8FnxEd9qogdUAgGxrWq_LGFh0FAbDdqYvGB-x8m_GPcZ69ubTmTW3YysUzM4i3A5j0MXp3AWngIMNrKgQsT5l-EkDi4fvQ92dvT4QX83Iy6c2xvFPOgalV_Qxov_0_g0lXICv7s60tlZvbzYkOrh4R5em5ZL8XweiNczRUk49aE/s1600/hassania%20elbotolaon.png", 
-                founded: "1946", 
-                city: "أكادير",
-                stadium: "ملعب أدرار"
-            },
-            "dhj": { 
-                name: "الدفاع الجديدي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi604V7G-TMAR-7ry4jbAw39AkcufYfEQt6mDoiQjJVMiHo7-qL4Avgf7Gl-8n-tUFGuTVLYBR5vL5ecjeOwBjEQi8CQ-5bHwMtlsy8iA3Q8iVFrmmn624fNS_hsbShF1hsE_MWXSNtN3ycw2bt9I28qumLlFeMlj_B0dqmSliogS2HviI0qYz72pCMsdU/s1600/difa3%20jdidi%20elbotolaon.png", 
-                founded: "1956", 
-                city: "الجديدة",
-                stadium: "ملعب بلدية الجديدة"
-            },
-            "od": { 
-                name: "أولمبيك الدشيرة", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5fMzOUOcDxRkI5xZON3V3KJpxTIzPp_je_QxIFEwK25igITEN_okWuuhiyYH_43NCWY3ubS1hh91hIqX0H7wObc-YGgdUYmtmbaTNxCXZeWErOdBPNFfr2TgvWE9YTJ_mRVQQahi-cYwMGbaN0nAyOh1ogc5FOReFBeZFJ8hXAc_tuyYico3z3AzL4X4/s1600/dchira%20elbotolaon.png", 
-                founded: "1921", 
-                city: "الدشيرة",
-                stadium: "ملعب الدشيرة البلدي"
-            },
-            "rcz": { 
-                name: "نهضة الزمامرة", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgye2fqgjgoLDcpAVG7nZHP12IUiisRF9OvRcdpv0esIZjRWHqJgCZFNL_f3MYyf42jJLI3v_BAOZ3GGADSxEhoDGyOKlDRVEBqE_dEOsB0BJQkplbF6VvAn9jV8MiV5mrzeV4gCSi4xQt2LzPWh0x1yTPbm8zEYlBdo6ovSp1RFVQmXzhaXdyu2nUJANA/s1600/nahdat%20zmarra%20elbotolaon.png", 
-                founded: "1938", 
-                city: "الزمامرة",
-                stadium: "ملعب أحمد شكري"
-            },
-            "kacm": { 
-                name: "الكوكب المراكشي", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEip-oEAsHz8oQKe10SIv7u9M1pM5fzw2aF3RVg6BWRnyaRDojF9zSva_yhy0VK7jPzG73OHM7631KrQAvRexNgvKIV8WCd8pl-msiSrf1tPni8PF2JQpZWASyRXDzjxaPc06n2H0La5UKcixDR9L2aS-SJchNPJ-6l7l2x7S9Ywg6bKDCHvyDs2y3Dy-1c/s1600/kwkab%20elbotolaon.png", 
-                founded: "1948", 
-                city: "مراكش",
-                stadium: "ملعب مراكش الكبير"
-            },
-            "usym": { 
-                name: "يعقوب المنصور", 
-                logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png", 
-                founded: "1983", 
-                city: "الرباط",
-                stadium: "ملعب البشير"
-            }
-        },
-        
-        // الترتيب - سيتم ترتيبه تلقائياً
-        standings: [
-            { id: "wac",  p: 8, w: 6, d: 2, l: 0, gf: 14, ga: 5,  pts: 20 },
-            { id: "far",  p: 8, w: 5, d: 3, l: 0, gf: 14, ga: 1,  pts: 18 },
-            { id: "mas",  p: 8, w: 4, d: 4, l: 0, gf: 11, ga: 2,  pts: 16 },
-            { id: "rca",  p: 7, w: 4, d: 3, l: 0, gf: 7,  ga: 1,  pts: 15 },
-            { id: "codm", p: 8, w: 3, d: 3, l: 2, gf: 6,  ga: 6,  pts: 12 },
-            { id: "rsb",  p: 6, w: 3, d: 2, l: 1, gf: 13, ga: 7,  pts: 11 },
-            { id: "od",   p: 8, w: 3, d: 2, l: 3, gf: 8,  ga: 9,  pts: 11 },
-            { id: "dhj",  p: 8, w: 2, d: 3, l: 3, gf: 6,  ga: 11, pts: 9 },
-            { id: "irt",  p: 8, w: 1, d: 5, l: 2, gf: 7,  ga: 11, pts: 8 },
-            { id: "rcz",  p: 7, w: 2, d: 2, l: 3, gf: 5,  ga: 9,  pts: 8 },
-            { id: "husa", p: 8, w: 2, d: 1, l: 5, gf: 6,  ga: 14, pts: 7 },
-            { id: "kacm", p: 8, w: 2, d: 1, l: 5, gf: 8,  ga: 9,  pts: 7 },
-            { id: "fus",  p: 8, w: 2, d: 1, l: 5, gf: 7,  ga: 10, pts: 7 },
-            { id: "usym", p: 8, w: 1, d: 3, l: 4, gf: 8,  ga: 11, pts: 6 },
-            { id: "uts",  p: 8, w: 0, d: 5, l: 3, gf: 7,  ga: 12, pts: 5 },
-            { id: "ocs",  p: 8, w: 1, d: 2, l: 5, gf: 6,  ga: 15, pts: 5 }
-        ],
-        
-        // الجولات
-        rounds: {
-            "1": [
-                {d:"12/09", t:"20:00", t1:"wac", s:"1-0", t2:"kacm", std:"مركب محمد الخامس"},
-                {d:"12/09", t:"18:00", t1:"far", s:"2-0", t2:"fus", std:"مركب مولاي عبد الله"},
-                {d:"13/09", t:"16:00", t1:"rca", s:"1-0", t2:"husa", std:"مركب محمد الخامس"},
-                {d:"13/09", t:"18:00", t1:"mas", s:"2-0", t2:"ocs", std:"ملعب فاس"},
-                {d:"14/09", t:"16:00", t1:"rsb", s:"3-1", t2:"irt", std:"ملعب البشير"},
-                {d:"14/09", t:"18:00", t1:"codm", s:"1-1", t2:"dhj", std:"الشرق الشرفي"},
-                {d:"15/09", t:"16:00", t1:"od", s:"0-0", t2:"uts", std:"ملعب الدشيرة"},
-                {d:"15/09", t:"18:00", t1:"rcz", s:"1-2", t2:"usym", std:"ملعب أحمد شكري"}
-            ],
-            "2": [
-                {d:"19/09", t:"20:00", t1:"usym", s:"1-1", t2:"wac", std:"ملعب البشير"},
-                {d:"19/09", t:"18:00", t1:"fus", s:"0-0", t2:"rca", std:"ملعب مولاي الحسن"},
-                {d:"20/09", t:"16:00", t1:"kacm", s:"1-2", t2:"far", std:"ملعب مراكش"},
-                {d:"20/09", t:"18:00", t1:"husa", s:"2-1", t2:"mas", std:"ملعب أدرار"},
-                {d:"21/09", t:"16:00", t1:"ocs", s:"1-2", t2:"rsb", std:"ملعب المسيرة"},
-                {d:"21/09", t:"18:00", t1:"irt", s:"1-1", t2:"codm", std:"ملعب ابن بطوطة"},
-                {d:"22/09", t:"16:00", t1:"dhj", s:"0-1", t2:"od", std:"ملعب الجديدة"},
-                {d:"22/09", t:"18:00", t1:"uts", s:"1-1", t2:"rcz", std:"ملعب تواركة"}
-            ],
-            "3": [
-                {d:"28/09", t:"20:00", t1:"wac", s:"3-1", t2:"rcz", std:"مركب محمد الخامس"},
-                {d:"28/09", t:"18:00", t1:"far", s:"4-0", t2:"ocs", std:"مركب مولاي عبد الله"},
-                {d:"29/09", t:"16:00", t1:"rca", s:"2-0", t2:"irt", std:"مركب محمد الخامس"},
-                {d:"29/09", t:"18:00", t1:"mas", s:"1-1", t2:"fus", std:"ملعب فاس"},
-                {d:"30/09", t:"16:00", t1:"rsb", s:"2-1", t2:"husa", std:"ملعب البشير"},
-                {d:"30/09", t:"18:00", t1:"codm", s:"0-0", t2:"kacm", std:"الشرق الشرفي"},
-                {d:"01/10", t:"16:00", t1:"od", s:"2-1", t2:"usym", std:"ملعب الدشيرة"},
-                {d:"01/10", t:"18:00", t1:"dhj", s:"1-1", t2:"uts", std:"ملعب الجديدة"}
-            ],
-            "4": [
-                {d:"03/10", t:"18:00", t1:"codm", s:"1-3", t2:"wac", std:"الشرق الشرفي"},
-                {d:"03/10", t:"16:00", t1:"ocs", s:"0-3", t2:"rca", std:"ملعب المسيرة"},
-                {d:"04/10", t:"18:00", t1:"rcz", s:"1-1", t2:"far", std:"ملعب أحمد شكري"},
-                {d:"04/10", t:"16:00", t1:"fus", s:"1-0", t2:"mas", std:"ملعب مولاي الحسن"},
-                {d:"05/10", t:"16:00", t1:"irt", s:"2-2", t2:"rsb", std:"ملعب ابن بطوطة"},
-                {d:"05/10", t:"18:00", t1:"husa", s:"0-1", t2:"codm", std:"ملعب أدرار"},
-                {d:"06/10", t:"16:00", t1:"usym", s:"2-1", t2:"dhj", std:"ملعب البشير"},
-                {d:"06/10", t:"18:00", t1:"uts", s:"0-0", t2:"od", std:"ملعب تواركة"}
-            ],
-            "5": [
-                {d:"29/10", t:"20:00", t1:"wac", s:"0-0", t2:"rca", std:"مركب محمد الخامس"},
-                {d:"29/10", t:"18:00", t1:"far", s:"3-0", t2:"codm", std:"مركب مولاي عبد الله"},
-                {d:"30/10", t:"16:00", t1:"mas", s:"1-0", t2:"husa", std:"ملعب فاس"},
-                {d:"30/10", t:"18:00", t1:"rsb", s:"2-1", t2:"kacm", std:"ملعب البشير"},
-                {d:"31/10", t:"16:00", t1:"od", s:"1-2", t2:"rcz", std:"ملعب الدشيرة"},
-                {d:"31/10", t:"18:00", t1:"dhj", s:"0-0", t2:"ocs", std:"ملعب الجديدة"},
-                {d:"01/11", t:"16:00", t1:"uts", s:"1-1", t2:"usym", std:"ملعب تواركة"},
-                {d:"01/11", t:"18:00", t1:"irt", s:"1-1", t2:"fus", std:"ملعب ابن بطوطة"}
-            ],
-            "6": [
-                {d:"02/11", t:"20:00", t1:"wac", s:"2-0", t2:"irt", std:"مركب محمد الخامس"},
-                {d:"02/11", t:"18:00", t1:"rca", s:"1-0", t2:"uts", std:"مركب محمد الخامس"},
-                {d:"03/11", t:"16:00", t1:"far", s:"0-0", t2:"dhj", std:"مركب مولاي عبد الله"},
-                {d:"03/11", t:"18:00", t1:"mas", s:"2-0", t2:"rsb", std:"ملعب فاس"},
-                {d:"04/11", t:"16:00", t1:"codm", s:"2-1", t2:"od", std:"الشرق الشرفي"},
-                {d:"04/11", t:"18:00", t1:"kacm", s:"1-0", t2:"husa", std:"ملعب مراكش"},
-                {d:"05/11", t:"16:00", t1:"usym", s:"0-1", t2:"ocs", std:"ملعب البشير"},
-                {d:"05/11", t:"18:00", t1:"rcz", s:"0-1", t2:"fus", std:"ملعب أحمد شكري"}
-            ],
-            "7": [
-                {d:"05/11", t:"16:00", t1:"husa", s:"1-2", t2:"wac", std:"ملعب أدرار"},
-                {d:"05/11", t:"18:00", t1:"rca", s:"2-0", t2:"codm", std:"مركب محمد الخامس"},
-                {d:"06/11", t:"16:00", t1:"far", s:"1-0", t2:"mas", std:"مركب مولاي عبد الله"},
-                {d:"06/11", t:"18:00", t1:"rsb", s:"3-2", t2:"usym", std:"ملعب البشير"},
-                {d:"07/11", t:"16:00", t1:"od", s:"2-0", t2:"kacm", std:"ملعب الدشيرة"},
-                {d:"07/11", t:"18:00", t1:"dhj", s:"1-1", t2:"rcz", std:"ملعب الجديدة"},
-                {d:"08/11", t:"16:00", t1:"ocs", s:"1-0", t2:"uts", std:"ملعب المسيرة"},
-                {d:"08/11", t:"18:00", t1:"fus", s:"2-1", t2:"irt", std:"ملعب مولاي الحسن"}
-            ],
-            "8": [
-                {d:"09/11", t:"16:00", t1:"ocs", s:"1-2", t2:"wac", std:"ملعب المسيرة"},
-                {d:"09/11", t:"18:00", t1:"far", s:"1-0", t2:"rca", std:"مركب مولاي عبد الله"},
-                {d:"10/11", t:"16:00", t1:"mas", s:"2-2", t2:"codm", std:"ملعب فاس"},
-                {d:"10/11", t:"18:00", t1:"rsb", s:"4-2", t2:"od", std:"ملعب البشير"},
-                {d:"11/11", t:"16:00", t1:"kacm", s:"2-1", t2:"usym", std:"ملعب مراكش"},
-                {d:"11/11", t:"18:00", t1:"husa", s:"1-2", t2:"fus", std:"ملعب أدرار"},
-                {d:"12/11", t:"16:00", t1:"irt", s:"1-1", t2:"dhj", std:"ملعب ابن بطوطة"},
-                {d:"12/11", t:"18:00", t1:"uts", s:"2-2", t2:"rcz", std:"ملعب تواركة"}
-            ]
-        },
-        
-        // بيانات اللاعبين (36 لاعب للوداد كمثال)
-        players: {
-            "wac": [
-                {n:"يوسف المطيع", p:"حارس مرمى", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgUo4dkktTOZdj0bbqu-XI4gdOIkckaLF37Yb6JCLgNcXB2nAfNDJzTZnz0ulQ87JnBLvM5JFO0CQ1rp51MWoAqcGVZalI9yqv_9zNBWpcUJhWlppWWxC2nqCQUE-gxq8-DD9f9C-jnBWdB-Nu4z1JOPjVwgQf8yLsYN8p85zflqRQe7M7mxe0bbPq0lV0/s1600/%D9%8A%D9%88%D8%B3%D9%81%20%D8%A7%D9%84%D9%85%D8%B7%D9%8A%D8%B9.png", m:8, g:0, y:0, r:0},
-                {n:"أسامة الزمراوي", p:"وسط ميدان", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbukgFSTjokLs4WoTGLcULMEeNqeZ2TUTZ9T6c977nUoFrty4ncmmsPrGZz0AFO0_KH8ivMuzogdUaaoTERy-_XEXg3Wj9cztFCqBE3IOb0gKDyU5NKsKvcjM2FVNwFqxHbyfBm45eLyKtOMvvvKZvEe0HQqtJDttv0LHs4TwJGBGsNMTwF3bYBkx2qsM/s1600/%D8%A7%D9%94%D8%B3%D8%A7%D9%85%D8%A9%20%D8%A7%D9%84%D8%B2%D9%85%D8%B1%D8%A7%D9%88%D9%8A.png", m:7, g:2, y:1, r:0},
-                {n:"أيوب بوشتى", p:"مدافع", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjR8u0i1Q9UlLw1PZbWBD6LvhkEx8x1IexgSkl1rnAxXFNb_glN3wzyJzf-asvvGITtfuD82vHLtvb1gKFPSTCMzOshcl6Hk_cot7CFSAkiHpk5IbgkwoifJpo1B17Lx_gEM7JxidrpN4XjRyfjv85yL-HULj4_U7yWhQE2NUHG2_k1tXpUWQU7zf6TX78/s1600/%D8%A7%D9%94%D9%8A%D9%88%D8%A8%20%D8%A8%D9%88%D8%B4%D8%AA%D9%89.png", m:8, g:0, y:2, r:0},
-                {n:"محمد مفيد", p:"مدافع أيمن", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEidaZpqymNDEyQTp5GQ9i7nOp1-hp3hyphenhyphenCZAO7sSJ4oSrQAyUqJgrcbBRTdJSOC3sw_laHKtde1EynCzeBqLDZ5l9DpxB-1K9qtlJew-3jnVnq4L8T-6NwSLet5FV39N081wJwdg-fITlFu9PeXrDYqDCSYB0gRpJZGvE_KVQoL0yHzKFBjMLtr-htE0JvY/s1600/%D9%85%D8%AD%D9%85%D8%AF%20%D9%85%D9%81%D9%8A%D8%AF.png", m:8, g:1, y:1, r:0},
-                {n:"محمد رايحي", p:"مهاجم", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjHVwPaPAzeaAbXgiyuWSLyOS_GuMf-0_wg3NUtjX3-jlMfHyNxQOGuCV2VG2wo0arQcBOB0KmRwC431RO8DvPxEdTWHKhVuhW2vrQ9JARMkZdVsycWLNi19KEzKn0kz-EXLBYPqr8qopu2Bdcymsvg4jLvhxtO4C-u1EnNLaAsEJEujKuBXNdnljoT-lg/s1600/%D9%85%D8%AD%D9%85%D8%AF%20%D8%B1%D8%A7%D9%8A%D8%AD%D9%8A.png", m:6, g:2, y:0, r:0},
-                {n:"أيمن ديراني", p:"مدافع", img:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhl2GoNGSTZoKbK8uOMtJGA95_l10A6FVaELY6nYfL41GntKu8zNaDdFFpKq6QdoS1TuAznMJE9qJNq_8rDCQu9yGC_-UvHp4NIup7z1AQaTQJ6lxNnc15xcwUVE1UyHxBraGP2Z1Zht87v4eVJoi1eYGYdeFC8jYTWqzLWUzBxUIbv3gZdHFDG7z4K_kI/s1600/%D8%A7%D9%94%D9%8A%D9%85%D9%86%20%D8%AF%D8%A7%D9%8A%D8%B1%D8%A7%D9%86%D9%8A.png", m:5, g:0, y:2, r:0},
-                // ... يمكن إضافة المزيد من اللاعبين (سأضع 36 لاعب كامل في الكود النهائي)
-            ]
-        },
-        
-        // الانتقالات
-        transfers: {
-            "wac": [
-                {n:"زاكارياس غيلان", from:"نهضة الزمامرة", from_logo:"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgye2fqgjgoLDcpAVG7nZHP12IUiisRF9OvRcdpv0esIZjRWHqJgCZFNL_f3MYyf42jJLI3v_BAOZ3GGADSxEhoDGyOKlDRVEBqE_dEOsB0BJQkplbF6VvAn9jV8MiV5mrzeV4gCSi4xQt2LzPWh0x1yTPbm8zEYlBdo6ovSp1RFVQmXzhaXdyu2nUJANA/s1600/nahdat%20zmarra%20elbotolaon.png", type:"انتقال", price:"مجاني"},
-                {n:"حكيم زياش", from:"حر", from_logo:"", type:"انتقال", price:"مجاني"}
-            ]
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البطولة أون | البطولة الوطنية المغربية</title>
+    <meta name="description" content="موقع البطولة أون: أخبار، ترتيب، جدول المباريات، تشكيلة اللاعبين، والانتقالات لفرق البطولة الوطنية المغربية (إنوي)">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            direction: rtl;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
         }
-    };
-    
-    // ==================== دوال المساعدة ====================
-    
-    // ترتيب الفرق ديناميكياً
-    function sortStandings() {
-        return BOTOLA_DB.standings.sort((a, b) => {
-            if (b.pts !== a.pts) return b.pts - a.pts;
-            const gdA = a.gf - a.ga;
-            const gdB = b.gf - b.ga;
-            return gdB - gdA;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        /* شريط الفرق العلوي */
+        .teams-nav {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+        }
+        .teams-nav h2 {
+            text-align: center;
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 22px;
+        }
+        .teams-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+        }
+        .team-nav-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .team-nav-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        .team-nav-item.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        .team-nav-item img {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+            object-fit: contain;
+        }
+        .team-nav-item span {
+            font-weight: bold;
+            font-size: 14px;
+            flex: 1;
+            text-align: right;
+        }
+        /* حاوية النظام */
+        #botola-app {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-top: 20px;
+            min-height: 500px;
+        }
+        .loading-state {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .loading-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .loading-text {
+            font-size: 20px;
+            color: #764ba2;
+            margin-bottom: 10px;
+        }
+        .loading-sub {
+            color: #666;
+            font-size: 16px;
+        }
+        /* تحسينات للجوال */
+        @media (max-width: 768px) {
+            .teams-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .team-nav-item span {
+                font-size: 12px;
+            }
+            .team-nav-item img {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- شريط التنقل بين الفرق -->
+        <div class="teams-nav">
+            <h2>🏆 اختر فريق البطولة المغربية</h2>
+            <div class="teams-grid" id="teamsNav">
+                <!-- سيتم ملؤها بالجافاسكربت -->
+            </div>
+        </div>
+        <!-- حاوية النظام -->
+        <div id="botola-app" data-team="wac">
+            <div class="loading-state">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png" 
+                     class="loading-logo" alt="شعار الوداد">
+                <div class="loading-text">جاري تحميل نظام البطولة المغربية...</div>
+                <div class="loading-sub">يرجى الانتظار قليلاً بينما نقوم بتحميل أحدث الإحصائيات</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // تعريف الفرق
+        const teams = [
+            {id: "wac", name: "الوداد الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png"},
+            {id: "rca", name: "الرجاء الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png"},
+            {id: "far", name: "الجيش الملكي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh6aa3FtbYHbHMZEhj-bAuBYL6fCkhm9U1t8T_L0bXdw8nAyzN4MVvtcSGVbrzB0f-npw___4ghtfUkwj4LDBW5HdRFesvedqj4m-Ged4QKqb2sqk-liO2LQiQ3GBSwmKB0MK2oLjaMc7a4oRpr8-glUuYyCjkv_toLfkS9PxHD45XvWMBonsb6nyKAf_0/s1600/far%20elbotolaon.png"},
+            {id: "mas", name: "المغرب الفاسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi-igka8JGdMxooELJ6fdG65ds3byXt37bQtGDJ8QRhXwoYR4ieyN0sh1v_FjPevP17byg9akoq9isvyjwdzGlMRBcREzFxILSb3BIvqnPDi0TcYYS6ChwnkwHLC5uatbAHU4WsxLEPltKZ8Bc87cJvFrDeuQZyB085AZsluC47LZTWNwOMQxPCY3sxVhY/s1600/fes%20elbotolaon.png"},
+            {id: "rsb", name: "نهضة بركان", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhc5JzEJVz_dOr2253YustqAKuvDosJ9JCQQByClQCJKQlgxdYIvZbbfutqFFQljifMX9z4ZgjkeTWEF-PUsPU-PIrQEM8WXEIpqg2Dg26zCtwVmJBOanF4ZoOMJzeBLb_RoLDUv-d3uwz4v2hCSRXZKoTuwMfyS7YCd9F8pWiPhfVoSeqCUbKG5CZG5cE/s1600/barkan%20elbotolaon.png"},
+            {id: "codm", name: "النادي المكناسي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgTxx7NmgVNlZhzkwOoglitHjTOR0F11OuYKLLkXcldpljr8SGL08yDo_ohy5ZfkkGzdpSvDYmiF1pJynETrfUAdsK2xzHZPSuhRUVZH_rMXG-c04U2Lziooy1wWN-3azB0_OAo4YQnTJceeXmHKRswKzgDt6qJOOekYdqqVHSFfWpg4IXB9s2YXvtDIME/s1600/maknas%20elbotolaon.png"},
+            {id: "irt", name: "اتحاد طنجة", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj4P_IvUvnWjM46GX9tjM1ar2klX7qaFOa4VN5YvGLhCUWA7NKS5WuGJUJqk9_uqfpL99_mb-0ocxZIdO8kWDjT3hZWTSn_Mmj3JOzE8mqSOdxrLLZW4VEM-L5ymQagqAOnkZxXW_D6OLPmcmpHFwIuph0LZwYCQdTWxAywnIYNM_AhI8fwcldq0I9QVWk/s1600/tanja%20elbotolaon.png"},
+            {id: "ocs", name: "أولمبيك آسفي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhennOIbFknnlYOmS4wwizF1GIxzDbqFnDXCeEdaGpoKpbzrFfbPExst5Gfd1S2u4hQgaOu_uohsHRYyjBdrnm8PurL_6UlyyM-KbvlKVF2tf_uBAgPnD5dW68wtKunRoLqk8HhO4IPM62oHtonupb2Inp2VsoZK7b1Ecf5MuzgZQMX_CtBx4EEnWjzuH8/s1600/assfi%20elbotolaon.png"},
+            {id: "fus", name: "الفتح الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY8Xl-VjUnPns3iQjGGnQxc4wFdtX-iG3iUPNh2KbWXx4gWo4D7Ai30h-xheqe28GmiHtCugMptmzCZJJgbS0R8SMLDRjD7wNXHY2hVgbXPEA2uDk2LTGlrlXaksyK4HdJQI6JXkJRISNL_J_BxJbazT33HJfOzcJuhCRmjY1QeIpLHpdlRxzG6-_Phng/s1600/fath%20raba%20elbotolaon.png"},
+            {id: "uts", name: "إتحاد تواركة", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhybz1aXcm8HM4tMmsZ2FsE17Mdz-yYEj8ZhpBAf0dxRUrpmcXkuPmVE5NiHFZbOCCzPsbDHvS0Lh169sEUwe2KfgV-njTNqPtzDRmyT7JWYgqef5k6TKzs_8mdd_Hc3ucpb7Lh9KtJBhZ08cP-7TsikV-JI7d8jedtYvuoPeX676STgHE3xzgnagU98P8/s1600/tihad%20twarka%20elbotolaon.png"},
+            {id: "husa", name: "حسنية أكادير", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEioKR1msekF2BXfNIgI8FnxEd9qogdUAgGxrWq_LGFh0FAbDdqYvGB-x8m_GPcZ69ubTmTW3YysUzM4i3A5j0MXp3AWngIMNrKgQsT5l-EkDi4fvQ92dvT4QX83Iy6c2xvFPOgalV_Qxov_0_g0lXICv7s60tlZvbzYkOrh4R5em5ZL8XweiNczRUk49aE/s1600/hassania%20elbotolaon.png"},
+            {id: "dhj", name: "الدفاع الجديدي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi604V7G-TMAR-7ry4jbAw39AkcufYfEQt6mDoiQjJVMiHo7-qL4Avgf7Gl-8n-tUFGuTVLYBR5vL5ecjeOwBjEQi8CQ-5bHwMtlsy8iA3Q8iVFrmmn624fNS_hsbShF1hsE_MWXSNtN3ycw2bt9I28qumLlFeMlj_B0dqmSliogS2HviI0qYz72pCMsdU/s1600/difa3%20jdidi%20elbotolaon.png"},
+            {id: "od", name: "أولمبيك الدشيرة", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj5fMzOUOcDxRkI5xZON3V3KJpxTIzPp_je_QxIFEwK25igITEN_okWuuhiyYH_43NCWY3ubS1hh91hIqX0H7wObc-YGgdUYmtmbaTNxCXZeWErOdBPNFfr2TgvWE9YTJ_mRVQQahi-cYwMGbaN0nAyOh1ogc5FOReFBeZFJ8hXAc_tuyYico3z3AzL4X4/s1600/dchira%20elbotolaon.png"},
+            {id: "rcz", name: "نهضة الزمامرة", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgye2fqgjgoLDcpAVG7nZHP12IUiisRF9OvRcdpv0esIZjRWHqJgCZFNL_f3MYyf42jJLI3v_BAOZ3GGADSxEhoDGyOKlDRVEBqE_dEOsB0BJQkplbF6VvAn9jV8MiV5mrzeV4gCSi4xQt2LzPWh0x1yTPbm8zEYlBdo6ovSp1RFVQmXzhaXdyu2nUJANA/s1600/nahdat%20zmarra%20elbotolaon.png"},
+            {id: "kacm", name: "الكوكب المراكشي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEip-oEAsHz8oQKe10SIv7u9M1pM5fzw2aF3RVg6BWRnyaRDojF9zSva_yhy0VK7jPzG73OHM7631KrQAvRexNgvKIV8WCd8pl-msiSrf1tPni8PF2JQpZWASyRXDzjxaPc06n2H0La5UKcixDR9L2aS-SJchNPJ-6l7l2x7S9Ywg6bKDCHvyDs2y3Dy-1c/s1600/kwkab%20elbotolaon.png"},
+            {id: "usym", name: "يعقوب المنصور", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png"}
+        ];
+        // تهيئة شريط الفرق
+        document.addEventListener('DOMContentLoaded', function() {
+            const navContainer = document.getElementById('teamsNav');
+            const appContainer = document.getElementById('botola-app');
+            teams.forEach(team => {
+                const teamItem = document.createElement('div');
+                teamItem.className = 'team-nav-item';
+                if (team.id === 'wac') teamItem.classList.add('active');
+                teamItem.innerHTML = `
+                    <span>${team.name}</span>
+                    <img src="${team.logo}" alt="${team.name}">
+                `;
+                teamItem.addEventListener('click', function() {
+                    // إزالة النشط من الكل
+                    document.querySelectorAll('.team-nav-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    // إضافة النشط للفريق المختار
+                    this.classList.add('active');
+                    // تغيير الفريق في النظام
+                    appContainer.setAttribute('data-team', team.id);
+                    // التمرير السلس إلى الأعلى (بدون sticky)
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    // إعادة تحميل النظام
+                    setTimeout(() => {
+                        if (window.reloadBotolaSystem) {
+                            window.reloadBotolaSystem();
+                        }
+                    }, 300);
+                });
+                navContainer.appendChild(teamItem);
+            });
+            // إخفاء شاشة التحميل عند تحميل النظام
+            setTimeout(() => {
+                const loadingState = document.querySelector('.loading-state');
+                if (loadingState) {
+                    loadingState.style.display = 'none';
+                }
+            }, 1000);
         });
-    }
-    
-    // الحصول على لون المرتبة
-    function getRankColor(rank) {
-        if (rank === 1 || rank === 2) return '#28a745'; // أخضر
-        if (rank === 3) return '#007bff'; // أزرق
-        if (rank === 15 || rank === 16) return '#dc3545'; // أحمر
-        return '#6c757d'; // رمادي
-    }
-    
-    // إنشاء جدول الترتيب
-    function createStandingsTable() {
-        const sorted = sortStandings();
-        let html = `
-        <div class="eb-section" id="standings-section">
-            <div class="eb-header"><h3 class="eb-title">🏆 الترتيب العام</h3></div>
-            <div class="table-scroll">
-                <table class="standings-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>الفريق</th>
-                            <th>لعب</th>
-                            <th class="hide-mobile">فاز</th>
-                            <th class="hide-mobile">تعادل</th>
-                            <th class="hide-mobile">خسر</th>
-                            <th class="hide-mobile">له</th>
-                            <th class="hide-mobile">عليه</th>
-                            <th class="hide-mobile">+/-</th>
-                            <th>النقاط</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
-        
-        sorted.forEach((team, idx) => {
-            const rank = idx + 1;
-            const teamInfo = BOTOLA_DB.teams[team.id];
-            const gd = team.gf - team.ga;
-            const gdStr = gd > 0 ? `+${gd}` : gd;
-            const rankColor = getRankColor(rank);
-            const rowBg = rank <= 2 ? 'background:#e6ffe6;' : rank === 3 ? 'background:#e6f2ff;' : rank >= 15 ? 'background:#ffe6e6;' : '';
-            
-            html += `
-                <tr style="${rowBg}">
-                    <td><span style="color:${rankColor};font-weight:bold;">${rank}</span></td>
-                    <td class="team-cell">
-                        <img src="${teamInfo.logo}" alt="${teamInfo.name}">
-                        <span>${teamInfo.name}</span>
-                    </td>
-                    <td>${team.p}</td>
-                    <td class="hide-mobile">${team.w}</td>
-                    <td class="hide-mobile">${team.d}</td>
-                    <td class="hide-mobile">${team.l}</td>
-                    <td class="hide-mobile">${team.gf}</td>
-                    <td class="hide-mobile">${team.ga}</td>
-                    <td class="hide-mobile">${gdStr}</td>
-                    <td style="font-weight:bold;color:#764ba2;">${team.pts}</td>
-                </tr>`;
-        });
-        
-        html += `</tbody></table></div></div>`;
-        return html;
-    }
-    
-    // إنشاء جدول المباريات
-    function createMatchesTable(roundNum) {
-        const matches = BOTOLA_DB.rounds[roundNum] || [];
-        let html = `<div class="matches-grid">`;
-        
-        matches.forEach(match => {
-            const t1 = BOTOLA_DB.teams[match.t1];
-            const t2 = BOTOLA_DB.teams[match.t2];
-            html += `
-                <div class="match-card">
-                    <div class="match-date">${match.d} - ${match.t}</div>
-                    <div class="match-teams">
-                        <div class="match-team">
-                            <img src="${t1.logo}" alt="${t1.name}">
-                            <span>${t1.name}</span>
-                        </div>
-                        <div class="match-score">${match.s}</div>
-                        <div class="match-team">
-                            <span>${t2.name}</span>
-                            <img src="${t2.logo}" alt="${t2.name}">
-                        </div>
-                    </div>
-                    <div class="match-stadium">${match.std}</div>
-                </div>`;
-        });
-        
-        html += `</div>`;
-        return html;
-    }
-    
-    // إنشاء بطاقات اللاعبين
-    function createPlayersGrid(teamId) {
-        const players = BOTOLA_DB.players[teamId] || [];
-        let html = `<div class="players-grid">`;
-        
-        players.forEach((player, idx) => {
-            html += `
-                <div class="player-card" onclick="showPlayerDetails(${idx}, '${teamId}')">
-                    <img src="${player.img}" alt="${player.n}">
-                    <h4>${player.n}</h4>
-                    <p>${player.p}</p>
-                    <div class="player-stats-mini">
-                        <span>⚽ ${player.g}</span>
-                        <span>🟨 ${player.y}</span>
-                        ${player.r > 0 ? `<span>🟥 ${player.r}</span>` : ''}
-                    </div>
-                </div>`;
-        });
-        
-        html += `</div>`;
-        return html;
-    }
-    
-    // ==================== التهيئة الرئيسية ====================
-    
-    window.initBotolaSystem = function() {
-        const container = document.querySelector('.app-container');
-        const currentTeam = document.getElementById('botola-app').getAttribute('data-team');
-        
-        let mainHTML = `
-            <style>
-                .eb-section { padding: 20px; border-bottom: 1px solid #eee; }
-                .eb-header { margin-bottom: 20px; }
-                .eb-title { font-size: 22px; color: #764ba2; font-weight: bold; }
-                .table-scroll { overflow-x: auto; }
-                .standings-table { width: 100%; border-collapse: collapse; }
-                .standings-table th, .standings-table td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
-                .standings-table th { background: #f8f9fa; font-weight: bold; }
-                .team-cell { display: flex; align-items: center; gap: 10px; }
-                .team-cell img { width: 30px; height: 30px; }
-                .matches-grid { display: grid; gap: 15px; }
-                .match-card { background: #f8f9fa; padding
+    </script>
+    <!-- استدعاء النظام -->
+    <script src="botola_master.js"></script>
+</body>
+</html>
+
