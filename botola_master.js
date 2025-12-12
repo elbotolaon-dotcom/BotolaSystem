@@ -30,18 +30,18 @@
             { id: "rsb",  p: 10, w: 7, d: 2, l: 1, gf: 13, ga: 4 },
             { id: "mas",  p: 10, w: 5, d: 3, l: 2, gf: 8,  ga: 6 },
             { id: "far",  p: 10, w: 4, d: 4, l: 2, gf: 14, ga: 4 },
-            { id: "wac",  p: 10, w: 4, d: 3, l: 3, gf: 13, ga: 11 },
-            { id: "rca",  p: 10, w: 3, d: 4, l: 3, gf: 8,  ga: 8 },
+            { id: "wac",  p: 10, w: 4, d: 3, l: 3, gf: 30, ga: 11 },
+            { id: "rca",  p: 10, w: 3, d: 4, l: 3, gf: 5,  ga: 8 },
             { id: "husa", p: 10, w: 4, d: 1, l: 5, gf: 11, ga: 12 },
             { id: "uts",  p: 10, w: 3, d: 4, l: 3, gf: 12, ga: 10 },
             { id: "rcz",  p: 10, w: 4, d: 1, l: 5, gf: 10, ga: 14 },
             { id: "dhj",  p: 10, w: 4, d: 1, l: 5, gf: 9,  ga: 13 },
             { id: "irt",  p: 10, w: 3, d: 3, l: 4, gf: 12, ga: 12 },
             { id: "fus",  p: 10, w: 3, d: 3, l: 4, gf: 8,  ga: 9 },
-            { id: "ocs",  p: 10, w: 3, d: 2, l: 5, gf: 10, ga: 15 },
+            { id: "ocs",  p: 10, w: 3, d: 2, l: 5, gf: 27, ga: 15 },
             { id: "codm", p: 10, w: 2, d: 4, l: 4, gf: 7,  ga: 11 },
             { id: "od",   p: 10, w: 2, d: 4, l: 4, gf: 9,  ga: 12 }, // مثال
-            { id: "kacm", p: 10, w: 2, d: 3, l: 5, gf: 8,  ga: 13 }, // مثال
+            { id: "kacm", p: 10, w: 2, d: 3, l: 5, gf: 29,  ga: 13 }, // مثال
             { id: "usym", p: 10, w: 1, d: 5, l: 4, gf: 6,  ga: 10 }  // مثال
         ],
 
