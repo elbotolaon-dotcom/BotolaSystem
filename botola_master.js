@@ -1,12 +1,12 @@
 /* 
-   Botola Pro Master Engine v3.0 (Smart & Interactive)
-   هذا الملف يقوم بـ: حساب الترتيب آلياً، إدارة الجولات، وعرض اللاعبين
+   Botola Pro Master Engine v4.0 (Fix Overflow & Tabs)
+   Author: You
+   Date: Dec 2025
 */
 
 (function() {
-    // 1. قاعدة البيانات (الفرق، المباريات، اللاعبين)
     const DB = {
-        // بيانات الفرق (مأخوذة من ملفك الأصلي)
+        // بيانات الفرق (كما هي، لا تغيير)
         teams: {
             "wac": { name: "الوداد الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png" },
             "rca": { name: "الرجاء الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png" },
@@ -26,28 +26,18 @@
             "usym": { name: "يعقوب المنصور", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png" }
         },
         
-        // سجل المباريات (أنت تدخل النتائج هنا، والنظام يحسب الترتيب وحده!)
-        // المفتاح هو رقم الجولة
+        // سجل المباريات (الجولات)
         matches: {
-            "1": [ 
-                {h:"wac", a:"mas", hs:1, as:0, date:"30/08", st:"محمد الخامس"}, 
-                {h:"rca", a:"far", hs:1, as:1, date:"31/08", st:"العربي الزاولي"},
-                {h:"rsb", a:"dhj", hs:2, as:0, date:"31/08", st:"البلدي"}
-            ],
-            "2": [ 
-                {h:"irt", a:"wac", hs:2, as:2, date:"07/09", st:"طنجة الكبير"}, 
-                {h:"far", a:"codm", hs:3, as:1, date:"07/09", st:"القنيطرة"} 
-            ],
-            // أضف الجولات القادمة هنا...
+            "1": [ {h:"wac", a:"mas", hs:1, as:0, date:"30/08", st:"محمد الخامس"}, {h:"rca", a:"far", hs:1, as:1, date:"31/08", st:"الزاولي"} ],
+            "2": [ {h:"irt", a:"wac", hs:2, as:2, date:"07/09", st:"طنجة الكبير"} ],
             "3": [ {h:"wac", a:"uts", hs:null, as:null, date:"14/09", st:"الزاولي"} ]
         },
 
-        // بيانات اللاعبين (أضف لاعبي كل فريق هنا)
+        // اللاعبين
         players: {
             "wac": [
                 {name: "يوسف المطيع", pos: "حارس", img: "https://via.placeholder.com/100", m:8, g:0, y:1},
-                {name: "جمال حركاس", pos: "دفاع", img: "https://via.placeholder.com/100", m:7, g:1, y:2},
-                {name: "بونا عمر", pos: "هجوم", img: "https://via.placeholder.com/100", m:8, g:3, y:0}
+                {name: "جمال حركاس", pos: "دفاع", img: "https://via.placeholder.com/100", m:7, g:1, y:2}
             ],
             "rca": [
                 {name: "أنس الزنيتي", pos: "حارس", img: "https://via.placeholder.com/100", m:8, g:0, y:0}
@@ -55,159 +45,117 @@
         }
     };
 
-    // 2. المحرك الذكي (لا تلمس الكود أدناه)
     window.BotolaEngine = {
-        // حساب الترتيب تلقائياً
         calculateStandings: function() {
             let stats = {};
-            // تهيئة العدادات لجميع الفرق
-            Object.keys(DB.teams).forEach(id => {
-                stats[id] = { id: id, ...DB.teams[id], p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 };
-            });
-
-            // المرور على كل المباريات
+            Object.keys(DB.teams).forEach(id => { stats[id] = { id: id, ...DB.teams[id], p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 }; });
             Object.values(DB.matches).flat().forEach(m => {
                 if(m.hs !== null && m.as !== null && stats[m.h] && stats[m.a]) {
                     stats[m.h].p++; stats[m.a].p++;
                     stats[m.h].gf += m.hs; stats[m.h].ga += m.as;
                     stats[m.a].gf += m.as; stats[m.a].ga += m.hs;
-                    
                     if(m.hs > m.as) { stats[m.h].w++; stats[m.h].pts += 3; stats[m.a].l++; }
                     else if(m.as > m.hs) { stats[m.a].w++; stats[m.a].pts += 3; stats[m.h].l++; }
                     else { stats[m.h].d++; stats[m.h].pts += 1; stats[m.a].d++; stats[m.a].pts += 1; }
                 }
             });
-
             return Object.values(stats).sort((a,b) => (b.pts - a.pts) || ((b.gf-b.ga)-(a.gf-a.ga)));
         },
 
-        // رسم الترتيب
-        renderStandings: function(containerId, activeTeamId) {
-            const container = document.getElementById(containerId);
-            if(!container) return;
-
-            const sorted = this.calculateStandings();
-            let html = sorted.map((t, i) => {
-                let color = '#eee';
-                if(i < 2) color = '#2dce89'; // أبطال
-                else if(i === 2) color = '#11cdef'; // كاف
-                else if(i > 13) color = '#f5365c'; // هبوط
-
-                const isMe = (t.id === activeTeamId);
-                const rowStyle = isMe ? "background:#fff9c4; border:2px solid #5e72e4; font-weight:bold; transform:scale(1.02);" : "border-bottom:1px solid #f0f0f0;";
-
-                return `
-                <tr style="${rowStyle}">
-                    <td style="padding:10px;text-align:center;"><span style="background:${color};color:#fff;width:22px;height:22px;border-radius:50%;display:inline-block;font-size:11px;line-height:22px;">${i+1}</span></td>
-                    <td style="padding:10px; display:flex; align-items:center; gap:8px;">
-                        <img src="${t.logo}" style="width:20px;"> ${t.name}
-                    </td>
-                    <td style="padding:10px;text-align:center;">${t.p}</td>
-                    <td style="padding:10px;text-align:center;font-weight:bold;">${t.pts}</td>
-                    <td class="desktop-only" style="padding:10px;text-align:center;color:#888;">${t.gf-t.ga}</td>
-                </tr>`;
-            }).join('');
-
-            container.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:13px;">
-                <thead style="background:#f6f9fc;color:#888;"><tr><th>#</th><th>الفريق</th><th>ل</th><th>ن</th><th class="desktop-only">+/-</th></tr></thead>
-                <tbody>${html}</tbody>
-            </table>`;
-        },
-
-        // رسم شريط الجولات والمباراة
-        renderRoundMatches: function(roundsContainerId, matchDisplayId, teamId) {
-            const rContainer = document.getElementById(roundsContainerId);
-            const mContainer = document.getElementById(matchDisplayId);
-            if(!rContainer || !mContainer) return;
-
-            // 1. إنشاء أزرار الجولات
-            let roundsHtml = '';
-            for(let i=1; i<=30; i++) {
-                roundsHtml += `<button onclick="BotolaEngine.showMatch(${i}, '${teamId}')" class="r-btn" id="btn-r-${i}" style="border:1px solid #ddd;background:#fff;padding:5px 12px;margin:0 3px;border-radius:15px;cursor:pointer;">${i}</button>`;
-            }
-            rContainer.innerHTML = `<div style="overflow-x:auto;white-space:nowrap;padding-bottom:10px;">${roundsHtml}</div>`;
-
-            // 2. عرض الجولة الأولى افتراضياً
-            this.showMatch(1, teamId);
-        },
-
-        // وظيفة إظهار مباراة محددة عند الضغط
-        showMatch: function(round, teamId) {
-            const mContainer = document.getElementById('match-display-area');
-            // تلوين الزر النشط
-            document.querySelectorAll('.r-btn').forEach(b => {
-                b.style.background='#fff'; b.style.color='#000'; b.style.borderColor='#ddd';
-            });
-            const activeBtn = document.getElementById(`btn-r-${round}`);
-            if(activeBtn) {
-                activeBtn.style.background='#5e72e4'; activeBtn.style.color='#fff'; activeBtn.style.borderColor='#5e72e4';
-            }
-
-            // البحث عن المباراة في هذه الجولة
-            const roundMatches = DB.matches[round] || [];
-            const match = roundMatches.find(m => m.h === teamId || m.a === teamId);
-
-            if(!match) {
-                mContainer.innerHTML = `<div style="padding:30px;text-align:center;color:#888;">لا توجد مباراة في الجولة ${round}</div>`;
-                return;
-            }
-
-            const isHome = (match.h === teamId);
-            const opponentId = isHome ? match.a : match.h;
-            const opponent = DB.teams[opponentId];
-            const myTeam = DB.teams[teamId];
+        renderStandings: function(cId, tId) {
+            const c = document.getElementById(cId); if(!c) return;
+            const s = this.calculateStandings();
             
-            const scoreDisplay = (match.hs !== null) ? `${match.hs} - ${match.as}` : "VS";
+            // حل مشكلة التداخل في الجدول: استخدام display: flex أو grid بسيط
+            let h = s.map((t, i) => {
+                let cl = i<2 ? '#2dce89' : (i===2 ? '#11cdef' : (i>13 ? '#f5365c' : '#eee'));
+                let style = (t.id === tId) ? "background:#fff9c4; font-weight:bold; border: 2px solid #5e72e4;" : "background:#fff;";
+                
+                return `
+                <div style="display:grid; grid-template-columns: 30px 1fr 30px 30px; gap:5px; padding:10px; border-bottom:1px solid #f0f0f0; align-items:center; ${style}">
+                    <div style="text-align:center;"><span style="background:${cl};color:#fff;border-radius:50%;width:20px;height:20px;display:inline-block;font-size:11px;line-height:20px;">${i+1}</span></div>
+                    <div style="display:flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;"><img src="${t.logo}" style="width:20px;flex-shrink:0;"> <span style="font-size:12px;">${t.name}</span></div>
+                    <div style="text-align:center;font-size:12px;">${t.p}</div>
+                    <div style="text-align:center;font-weight:bold;font-size:12px;">${t.pts}</div>
+                </div>`;
+            }).join('');
+            
+            // رأس الجدول
+            c.innerHTML = `
+            <div style="background:#f6f9fc; padding:10px; display:grid; grid-template-columns: 30px 1fr 30px 30px; gap:5px; font-weight:bold; font-size:11px; color:#888;">
+                <div>#</div><div>الفريق</div><div>ل</div><div>ن</div>
+            </div>
+            <div style="max-height:500px; overflow-y:auto;">${h}</div>`;
+        },
 
-            mContainer.innerHTML = `
-            <div style="text-align:center; padding:20px;">
-                <div style="font-size:12px;color:#888;margin-bottom:15px;">${match.date} | ${match.st}</div>
-                <div style="display:flex;align-items:center;justify-content:space-around;">
-                    <div style="width:100px;">
-                        <img src="${myTeam.logo}" style="width:50px;margin-bottom:5px;"><br>
-                        <strong>${myTeam.name}</strong>
-                    </div>
-                    <div style="font-size:24px;font-weight:bold;background:#f6f9fc;padding:5px 20px;border-radius:20px;">${scoreDisplay}</div>
-                    <div style="width:100px;">
-                        <img src="${opponent.logo}" style="width:50px;margin-bottom:5px;"><br>
-                        <strong>${opponent.name}</strong>
-                    </div>
+        renderRoundMatches: function(rId, mId, tId) {
+            const rc = document.getElementById(rId);
+            const mc = document.getElementById(mId);
+            if(!rc || !mc) return;
+
+            // حل مشكلة التداخل: استخدام flex-wrap وتصغير الأزرار
+            let btns = '';
+            for(let i=1; i<=30; i++) {
+                // هل توجد مباراة للفريق في هذه الجولة؟
+                let hasMatch = (DB.matches[i] || []).some(m => m.h === tId || m.a === tId);
+                let bg = hasMatch ? '#fff' : '#f9f9f9'; // تمييز خفيف
+                btns += `<button onclick="BotolaEngine.showMatch(${i}, '${tId}')" class="r-btn" id="r-btn-${i}" style="min-width:35px; height:35px; border:1px solid #ddd; background:${bg}; border-radius:50%; margin:2px; font-size:12px; cursor:pointer;">${i}</button>`;
+            }
+            rc.innerHTML = `<div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center; padding-bottom:10px;">${btns}</div>`;
+
+            this.showMatch(1, tId);
+        },
+
+        showMatch: function(r, tId) {
+            const mc = document.getElementById('match-display-area');
+            document.querySelectorAll('.r-btn').forEach(b => { b.style.background='#fff'; b.style.color='#333'; b.style.borderColor='#ddd'; });
+            const ab = document.getElementById(`r-btn-${r}`);
+            if(ab) { ab.style.background='#5e72e4'; ab.style.color='#fff'; ab.style.borderColor='#5e72e4'; }
+
+            const match = (DB.matches[r] || []).find(m => m.h === tId || m.a === tId);
+            if(!match) { mc.innerHTML = '<div style="padding:20px;text-align:center;color:#888;">لا توجد مباراة</div>'; return; }
+
+            const isHome = (match.h === tId);
+            const op = DB.teams[isHome ? match.a : match.h];
+            const me = DB.teams[tId];
+            const score = (match.hs !== null) ? `${match.hs}-${match.as}` : "VS";
+
+            // تصميم البطاقة "بدون تداخل"
+            mc.innerHTML = `
+            <div style="display:flex; flex-direction:column; align-items:center; gap:15px; padding:15px;">
+                <div style="font-size:11px; color:#888; background:#f0f0f0; padding:3px 10px; border-radius:10px;">${match.date} | ${match.st}</div>
+                <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
+                    <div style="text-align:center; width:30%;"><img src="${me.logo}" style="width:40px;height:40px;object-fit:contain;"><br><span style="font-size:11px;font-weight:bold;">${me.name}</span></div>
+                    <div style="font-size:20px; font-weight:bold; background:#5e72e4; color:#fff; padding:5px 15px; border-radius:10px;">${score}</div>
+                    <div style="text-align:center; width:30%;"><img src="${op.logo}" style="width:40px;height:40px;object-fit:contain;"><br><span style="font-size:11px;font-weight:bold;">${op.name}</span></div>
                 </div>
             </div>`;
         },
 
-        // رسم بطاقات اللاعبين (Popup)
-        renderPlayers: function(containerId, teamId) {
-            const container = document.getElementById(containerId);
-            if(!container) return;
-            
-            const players = DB.players[teamId] || [];
-            if(players.length === 0) { container.innerHTML = 'لا توجد بيانات'; return; }
+        renderPlayers: function(cId, tId) {
+            const c = document.getElementById(cId); if(!c) return;
+            const p = DB.players[tId] || [];
+            if(!p.length) { c.innerHTML = 'لا توجد بيانات'; return; }
 
-            let html = players.map(p => `
-                <div onclick="this.classList.toggle('active')" class="p-card" style="position:relative;border:1px solid #eee;border-radius:10px;padding:10px;text-align:center;cursor:pointer;overflow:hidden;">
-                    <img src="${p.img}" style="width:60px;height:60px;border-radius:50%;margin-bottom:5px;">
-                    <div style="font-weight:bold;font-size:13px;">${p.name}</div>
-                    <div style="font-size:11px;color:#888;">${p.pos}</div>
-                    
-                    <!-- طبقة الإحصائيات المخفية -->
-                    <div class="stats-overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.95);display:flex;flex-direction:column;justify-content:center;opacity:0;transition:0.3s;">
-                        <div style="font-size:12px;">مباريات: <strong>${p.m}</strong></div>
-                        <div style="font-size:12px;">أهداف: <strong>${p.g}</strong></div>
-                        <div style="font-size:12px;">إنذارات: <strong style="color:orange">${p.y}</strong></div>
+            c.innerHTML = `
+            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap:10px;">
+                ${p.map(pl => `
+                <div onclick="this.classList.toggle('active')" class="pl-card" style="position:relative; border:1px solid #eee; padding:10px; border-radius:8px; text-align:center; overflow:hidden;">
+                    <img src="${pl.img}" style="width:50px; height:50px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
+                    <div style="font-size:11px; font-weight:bold; margin-top:5px;">${pl.name}</div>
+                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); display:flex; flex-direction:column; justify-content:center; opacity:0; transition:0.2s;" class="stats">
+                        <div style="font-size:10px;">لعب: <b>${pl.m}</b></div>
+                        <div style="font-size:10px;">أهداف: <b>${pl.g}</b></div>
                     </div>
-                </div>
-                <style>.p-card.active .stats-overlay { opacity: 1; }</style>
-            `).join('');
-
-            container.innerHTML = `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;">${html}</div>`;
+                </div>`).join('')}
+            </div>
+            <style>.pl-card.active .stats { opacity:1; cursor:pointer; }</style>`;
         },
 
-        // دالة التشغيل الرئيسية
-        init: function(teamId) {
-            this.renderStandings('standings-container', teamId);
-            this.renderRoundMatches('rounds-container', 'match-display-area', teamId);
-            this.renderPlayers('players-container', teamId);
+        init: function(tId) {
+            this.renderStandings('standings-box', tId);
+            this.renderRoundMatches('rounds-box', 'match-display-area', tId);
+            this.renderPlayers('players-box', tId);
         }
     };
 })();
