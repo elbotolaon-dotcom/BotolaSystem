@@ -1,12 +1,6 @@
-/* 
-   Botola Pro Master Engine v4.0 (Fix Overflow & Tabs)
-   Author: You
-   Date: Dec 2025
-*/
-
+/* Botola Master Engine v5.0 (Matches HTML 0.txt & 01.txt) */
 (function() {
     const DB = {
-        // بيانات الفرق (كما هي، لا تغيير)
         teams: {
             "wac": { name: "الوداد الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiY5x7sLNOVCth8x7gfRCsazVQ4Oa5dROJJK5qpTRan8ai0sgwG6KYrbtEGwIvVrl0_i-lQ2zo4HWMQnqQaUx5qwVMQhNRrCNE6W_8lo_NAAS6USi_JQj1qxBXZH4RakVNSQt7RFFLyFjX4t6qRIBinU_0bkPBLF5s4J-BCeIS4rFg0wiE4_WEFK5_Ibb0/s1600/wida%20elbotolaon.png" },
             "rca": { name: "الرجاء الرياضي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjYTcZHL8uXzayfgOuBhzbOIZRvsPIkHJU8k4bpE0G7wnZIUEGEp-bZH_n_Bjqw56nISyoQ42mS7MjAPTxVhPTGrAlIZLHvNw4E6qyooC8US7kXSfUOmCyqVCst7oGMI96mXdWKVEBhT0AI-WuAxv5G5G3Ll7-D0qJrBQcwZa-GCZL2U0fs3MaT_SFocTk/s1600/raja%20elbotolaon.png" },
@@ -25,15 +19,11 @@
             "kacm": { name: "الكوكب المراكشي", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEip-oEAsHz8oQKe10SIv7u9M1pM5fzw2aF3RVg6BWRnyaRDojF9zSva_yhy0VK7jPzG73OHM7631KrQAvRexNgvKIV8WCd8pl-msiSrf1tPni8PF2JQpZWASyRXDzjxaPc06n2H0La5UKcixDR9L2aS-SJchNPJ-6l7l2x7S9Ywg6bKDCHvyDs2y3Dy-1c/s1600/kwkab%20elbotolaon.png" },
             "usym": { name: "يعقوب المنصور", logo: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEFq76HFAW4KUgwf1Vi4WHlOyf-3xnRLxPeGJ-q8GUIiLhcq7W7U5fFfHfWBgsZVaq3R6vBkKyW25D9G_AEUefo2kVa6dIM5ru8WniSUQF97avoSaGxn_mWpsfQy7_f3L-249taATp1R_6KTJ-8vINPKeVQmYq8rqQbo8GDEpbJDW5hrnGR6O_S8xCPYI/s1600/tihad%20masor%20elbotolaon.png" }
         },
-        
-        // سجل المباريات (الجولات)
         matches: {
-            "1": [ {h:"wac", a:"mas", hs:1, as:0, date:"30/08", st:"محمد الخامس"}, {h:"rca", a:"far", hs:1, as:1, date:"31/08", st:"الزاولي"} ],
-            "2": [ {h:"irt", a:"wac", hs:2, as:2, date:"07/09", st:"طنجة الكبير"} ],
-            "3": [ {h:"wac", a:"uts", hs:null, as:null, date:"14/09", st:"الزاولي"} ]
+            "1": [ {h:"wac", a:"mas", hs:1, as:0, date:"30/08", st:"محمد الخامس"}, {h:"rca", a:"far", hs:0, as:0, date:"31/08", st:"الزاولي"} ],
+            "2": [ {h:"irt", a:"wac", hs:2, as:2, date:"07/09", st:"طنجة الكبير"} ]
+            // ... Add more rounds
         },
-
-        // اللاعبين
         players: {
             "wac": [
                 {name: "يوسف المطيع", pos: "حارس", img: "https://via.placeholder.com/100", m:8, g:0, y:1},
@@ -46,116 +36,73 @@
     };
 
     window.BotolaEngine = {
-        calculateStandings: function() {
-            let stats = {};
-            Object.keys(DB.teams).forEach(id => { stats[id] = { id: id, ...DB.teams[id], p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 }; });
+        calcStats: function() {
+            let s = {};
+            Object.keys(DB.teams).forEach(id => s[id] = { id, ...DB.teams[id], p:0, w:0, d:0, l:0, gf:0, ga:0, pts:0 });
             Object.values(DB.matches).flat().forEach(m => {
-                if(m.hs !== null && m.as !== null && stats[m.h] && stats[m.a]) {
-                    stats[m.h].p++; stats[m.a].p++;
-                    stats[m.h].gf += m.hs; stats[m.h].ga += m.as;
-                    stats[m.a].gf += m.as; stats[m.a].ga += m.hs;
-                    if(m.hs > m.as) { stats[m.h].w++; stats[m.h].pts += 3; stats[m.a].l++; }
-                    else if(m.as > m.hs) { stats[m.a].w++; stats[m.a].pts += 3; stats[m.h].l++; }
-                    else { stats[m.h].d++; stats[m.h].pts += 1; stats[m.a].d++; stats[m.a].pts += 1; }
+                if(m.hs!==null && m.as!==null && s[m.h] && s[m.a]) {
+                    s[m.h].p++; s[m.a].p++; s[m.h].gf+=m.hs; s[m.h].ga+=m.as; s[m.a].gf+=m.as; s[m.a].ga+=m.hs;
+                    if(m.hs>m.as) { s[m.h].w++; s[m.h].pts+=3; s[m.a].l++; }
+                    else if(m.as>m.hs) { s[m.a].w++; s[m.a].pts+=3; s[m.h].l++; }
+                    else { s[m.h].d++; s[m.h].pts++; s[m.a].d++; s[m.a].pts++; }
                 }
             });
-            return Object.values(stats).sort((a,b) => (b.pts - a.pts) || ((b.gf-b.ga)-(a.gf-a.ga)));
+            return Object.values(s).sort((a,b) => (b.pts-a.pts)||( (b.gf-b.ga)-(a.gf-a.ga) ));
         },
-
-        renderStandings: function(cId, tId) {
-            const c = document.getElementById(cId); if(!c) return;
-            const s = this.calculateStandings();
-            
-            // حل مشكلة التداخل في الجدول: استخدام display: flex أو grid بسيط
-            let h = s.map((t, i) => {
-                let cl = i<2 ? '#2dce89' : (i===2 ? '#11cdef' : (i>13 ? '#f5365c' : '#eee'));
-                let style = (t.id === tId) ? "background:#fff9c4; font-weight:bold; border: 2px solid #5e72e4;" : "background:#fff;";
-                
-                return `
-                <div style="display:grid; grid-template-columns: 30px 1fr 30px 30px; gap:5px; padding:10px; border-bottom:1px solid #f0f0f0; align-items:center; ${style}">
-                    <div style="text-align:center;"><span style="background:${cl};color:#fff;border-radius:50%;width:20px;height:20px;display:inline-block;font-size:11px;line-height:20px;">${i+1}</span></div>
-                    <div style="display:flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;"><img src="${t.logo}" style="width:20px;flex-shrink:0;"> <span style="font-size:12px;">${t.name}</span></div>
-                    <div style="text-align:center;font-size:12px;">${t.p}</div>
-                    <div style="text-align:center;font-weight:bold;font-size:12px;">${t.pts}</div>
-                </div>`;
-            }).join('');
-            
-            // رأس الجدول
-            c.innerHTML = `
-            <div style="background:#f6f9fc; padding:10px; display:grid; grid-template-columns: 30px 1fr 30px 30px; gap:5px; font-weight:bold; font-size:11px; color:#888;">
-                <div>#</div><div>الفريق</div><div>ل</div><div>ن</div>
-            </div>
-            <div style="max-height:500px; overflow-y:auto;">${h}</div>`;
-        },
-
-        renderRoundMatches: function(rId, mId, tId) {
-            const rc = document.getElementById(rId);
-            const mc = document.getElementById(mId);
-            if(!rc || !mc) return;
-
-            // حل مشكلة التداخل: استخدام flex-wrap وتصغير الأزرار
-            let btns = '';
-            for(let i=1; i<=30; i++) {
-                // هل توجد مباراة للفريق في هذه الجولة؟
-                let hasMatch = (DB.matches[i] || []).some(m => m.h === tId || m.a === tId);
-                let bg = hasMatch ? '#fff' : '#f9f9f9'; // تمييز خفيف
-                btns += `<button onclick="BotolaEngine.showMatch(${i}, '${tId}')" class="r-btn" id="r-btn-${i}" style="min-width:35px; height:35px; border:1px solid #ddd; background:${bg}; border-radius:50%; margin:2px; font-size:12px; cursor:pointer;">${i}</button>`;
+        render: function(tId) {
+            // 1. Standings
+            const sb = document.getElementById('standings-body');
+            if(sb) {
+                sb.innerHTML = this.calcStats().map((t,i) => `
+                <tr class="${t.id===tId?'active-row':''}">
+                    <td><span class="rank-badge r-${i+1}">${i+1}</span></td>
+                    <td class="team-col"><img src="${t.logo}" width="24">${t.name}</td>
+                    <td>${t.p}</td>
+                    <td class="pts-col">${t.pts}</td>
+                    <td class="desktop-only">${t.gf-t.ga}</td>
+                </tr>`).join('');
             }
-            rc.innerHTML = `<div style="display:flex; flex-wrap:wrap; gap:5px; justify-content:center; padding-bottom:10px;">${btns}</div>`;
-
-            this.showMatch(1, tId);
+            // 2. Matches
+            const rn = document.getElementById('rounds-nav');
+            if(rn) {
+                rn.innerHTML = Array.from({length:30},(_,i)=>i+1).map(r => {
+                    let has = (DB.matches[r]||[]).some(m=>m.h===tId||m.a===tId);
+                    return `<button onclick="BotolaEngine.showMatch(${r},'${tId}')" id="rt-${r}" class="r-tab" style="${has?'border-color:#5e72e4':''}">${r}</button>`;
+                }).join('');
+                this.showMatch(1, tId);
+            }
+            // 3. Squad
+            const sg = document.getElementById('squad-grid');
+            if(sg) {
+                sg.innerHTML = (DB.players[tId]||[]).map(p => `
+                <div class="p-card" onclick="this.classList.toggle('active')">
+                    <img src="${p.img}" class="p-img">
+                    <div style="font-weight:700;font-size:13px">${p.name}</div>
+                    <div class="p-stats">
+                        <div>لعب: <b>${p.m}</b></div>
+                        <div>أهداف: <b>${p.g}</b></div>
+                    </div>
+                </div>`).join('');
+            }
         },
-
         showMatch: function(r, tId) {
-            const mc = document.getElementById('match-display-area');
-            document.querySelectorAll('.r-btn').forEach(b => { b.style.background='#fff'; b.style.color='#333'; b.style.borderColor='#ddd'; });
-            const ab = document.getElementById(`r-btn-${r}`);
-            if(ab) { ab.style.background='#5e72e4'; ab.style.color='#fff'; ab.style.borderColor='#5e72e4'; }
-
-            const match = (DB.matches[r] || []).find(m => m.h === tId || m.a === tId);
-            if(!match) { mc.innerHTML = '<div style="padding:20px;text-align:center;color:#888;">لا توجد مباراة</div>'; return; }
-
-            const isHome = (match.h === tId);
-            const op = DB.teams[isHome ? match.a : match.h];
-            const me = DB.teams[tId];
-            const score = (match.hs !== null) ? `${match.hs}-${match.as}` : "VS";
-
-            // تصميم البطاقة "بدون تداخل"
-            mc.innerHTML = `
-            <div style="display:flex; flex-direction:column; align-items:center; gap:15px; padding:15px;">
-                <div style="font-size:11px; color:#888; background:#f0f0f0; padding:3px 10px; border-radius:10px;">${match.date} | ${match.st}</div>
-                <div style="display:flex; align-items:center; justify-content:space-between; width:100%;">
-                    <div style="text-align:center; width:30%;"><img src="${me.logo}" style="width:40px;height:40px;object-fit:contain;"><br><span style="font-size:11px;font-weight:bold;">${me.name}</span></div>
-                    <div style="font-size:20px; font-weight:bold; background:#5e72e4; color:#fff; padding:5px 15px; border-radius:10px;">${score}</div>
-                    <div style="text-align:center; width:30%;"><img src="${op.logo}" style="width:40px;height:40px;object-fit:contain;"><br><span style="font-size:11px;font-weight:bold;">${op.name}</span></div>
-                </div>
+            document.querySelectorAll('.r-tab').forEach(b=>b.classList.remove('active'));
+            let b=document.getElementById(`rt-${r}`); if(b) b.classList.add('active');
+            
+            const md = document.getElementById('match-display');
+            const m = (DB.matches[r]||[]).find(x=>x.h===tId||x.a===tId);
+            
+            if(!m) { md.innerHTML = '<div style="color:#999">لا توجد مباراة</div>'; return; }
+            
+            let me = DB.teams[tId], op = DB.teams[m.h===tId?m.a:m.h];
+            md.innerHTML = `
+            <div style="font-size:13px;color:#888;margin-bottom:15px">${m.date} | ${m.st}</div>
+            <div class="m-score-box">
+                <div style="width:100px"><img src="${me.logo}" width="60"><br><span class="m-t-name">${me.name}</span></div>
+                <div class="m-score-val">${m.hs!==null?m.hs+'-'+m.as:'VS'}</div>
+                <div style="width:100px"><img src="${op.logo}" width="60"><br><span class="m-t-name">${op.name}</span></div>
             </div>`;
         },
-
-        renderPlayers: function(cId, tId) {
-            const c = document.getElementById(cId); if(!c) return;
-            const p = DB.players[tId] || [];
-            if(!p.length) { c.innerHTML = 'لا توجد بيانات'; return; }
-
-            c.innerHTML = `
-            <div style="display:grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); gap:10px;">
-                ${p.map(pl => `
-                <div onclick="this.classList.toggle('active')" class="pl-card" style="position:relative; border:1px solid #eee; padding:10px; border-radius:8px; text-align:center; overflow:hidden;">
-                    <img src="${pl.img}" style="width:50px; height:50px; border-radius:50%; border:2px solid #fff; box-shadow:0 2px 5px rgba(0,0,0,0.1);">
-                    <div style="font-size:11px; font-weight:bold; margin-top:5px;">${pl.name}</div>
-                    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.95); display:flex; flex-direction:column; justify-content:center; opacity:0; transition:0.2s;" class="stats">
-                        <div style="font-size:10px;">لعب: <b>${pl.m}</b></div>
-                        <div style="font-size:10px;">أهداف: <b>${pl.g}</b></div>
-                    </div>
-                </div>`).join('')}
-            </div>
-            <style>.pl-card.active .stats { opacity:1; cursor:pointer; }</style>`;
-        },
-
-        init: function(tId) {
-            this.renderStandings('standings-box', tId);
-            this.renderRoundMatches('rounds-box', 'match-display-area', tId);
-            this.renderPlayers('players-box', tId);
-        }
+        init: function(tId) { this.render(tId); }
     };
 })();
